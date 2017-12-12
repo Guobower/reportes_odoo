@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wizard_account_results" model="ir.ui.view">
+        <field name="name">Reporte de resultados</field>
+        <field name="model">wizard.results.ecosoft</field>
+        <field name="arch" type="xml">
+            <form string="Choose your Period">
+                <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', False)]}">
+                    Selecciona un Periodo
+                </p>
+                <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', True)]}">
+                    Reporte de resultados
+                </p>
+                <group>
+                    <field name="choose_period"/>
+                    <field name="period_id" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
+                    <field name="level" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Reporte Resultados" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_account_results_menu" model="ir.actions.act_window">
+        <field name="name">Reporte de resultados</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.results.ecosoft</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_account_results"/>
+        <field name="target">new</field>
+    </record>
+    
+    <menuitem id="menu_results_report"
+        name="Reporte de resultados"
+        parent="menu_finance_legal_statement_ecosoft"
+        action="action_account_results_menu"/>
+
+</odoo>

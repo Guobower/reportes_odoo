@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report 
+            id="action_report_trial_balance_ecosoft"
+            model="account.balance.report"
+            string="Balanza Comprobación Ecosoft"
+            report_type="qweb-pdf"
+            name="account.report_trialbalance_ecosoft"
+            file="account.report_trialbalance_ecosoft"
+            />
+        
+        <report 
+            id="action_report_general_balance_ecosoft"
+            model="account.balance.report"
+            string="Balance General Ecosoft"
+            report_type="qweb-pdf"
+            name="account.report_generalbalance_ecosoft"
+            file="account.report_generalbalance_ecosoft"
+            />
+
+        <report 
+            id="action_report_results_ecosoft"
+            model="account.balance.report"
+            string="Reporte Resultados Ecosoft"
+            report_type="qweb-pdf"
+            name="account.report_results_ecosoft"
+            file="account.report_results_ecosoft"
+            />
+    </data>
+</odoo>

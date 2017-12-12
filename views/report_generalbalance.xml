@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_generalbalance_ecosoft">
+    <t t-call="report.html_container">
+        <t t-call="report.internal_layout">
+            <div class="page">
+                <t t-set="company" t-value="res_company"></t>
+                 <table style="width: 100%">                         
+                    <tr style="text-align: left;border-bottom:1px dotted #AAAAAA;">
+                        <td style="width: 70%">
+                            <h2><span t-esc="res_company.name"/></h2>
+                        </td>
+                        <td>
+                            <img t-if="company.logo"
+                                    t-att-src="'data:image/png;base64,%s' % company.logo"
+                                    style="max-height:90px;" />
+                        </td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td colspan="2">
+                            <h3>Balance General</h3>
+                        </td>
+                        
+                    </tr>                    
+                </table>
+                 <table style="width: 100%">     
+                  <tr>
+                        <td class="text-left" colspan="2">
+                          <h5>
+                               Dirección: Industria electrica No. 2 parque industrial
+                               
+                           </h5>
+                        </td>
+                   </tr>
+                   <tr>     
+                         <td class="text-left">
+                          <h5> Reg. Frd.: IGU640324RD7</h5>
+                        </td>
+                        <td class="text-right">
+                          <h5> Periodo: <span t-esc="periodo"/></h5>
+                        </td>
+                   </tr>
+                </table>
+                <h4>
+                  <strong>ACTIVO</strong>
+                </h4>
+                
+                <p>
+                  <strong>ACTIVO CIRCULANTE</strong>
+                </p>
+                <table class="table table-condensed" style="font-size: 10px;">
+                    
+                    <tbody>
+                        <tr t-foreach="activo_circulante" t-as="account">
+                          <td >
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                          
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE ACTIVO CIRCULANTE: </strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_activo_circulante']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>
+                  <strong>ACTIVO NO CIRCULANTE</strong>
+                </p>
+                <table class="table table-condensed" style="font-size: 10px;">
+                    
+                    <tbody>
+                        <tr t-foreach="activo_no_circulante" t-as="account">
+                          <td >
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>                          
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE ACTIVO NO CIRCULANTE:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_activo_no_circulante']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>
+                  <strong>ACTIVO DIFERIDO</strong>
+                </p>
+                <table class="table table-condensed" style="font-size: 10px;">
+                    
+                    <tbody>
+                        <tr t-foreach="activo_diferido" t-as="account">
+                          <td >
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>                          
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <strong>TOTAL ACTIVO DIFERIDO:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_activo_diferido']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>                      
+                    </tbody>
+                </table>
+
+                 <table class="table table-condensed" style="font-size: 15px;">
+                     <tbody>
+
+                       <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE ACTIVO:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_activo']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <h4>
+                  <strong>PASIVO Y CAPITAL</strong>
+                </h4>
+                
+                 <p>
+                  <strong>PASIVO CORTO PLAZO</strong>
+                </p>
+                <table class="table table-condensed" style="font-size: 10px;">
+                    
+                    <tbody>
+                        <tr t-foreach="activo_diferido" t-as="account">
+                          <td >
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>                          
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE PASIVO CORTO PLAZO:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_pasivo_corto_plazo']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>
+                    </tbody>
+                </table>
+
+                 <p>
+                  <strong>CAPITAL</strong>
+                </p>
+                <table class="table table-condensed" style="font-size: 10px;">
+                    
+                    <tbody>
+                        <tr t-foreach="capital" t-as="account">
+                          <td >
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>                          
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE CAPITAL:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_capital']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>                       
+                    </tbody>
+                </table>
+
+                  <table class="table table-condensed" style="font-size: 15px;">
+                     <tbody>
+                         <tr>
+                          <td class="text-right">
+                            <strong>TOTAL DE PASIVO Y CAPITAL:</strong>
+                          </td>
+                          <td  class="text-right">
+                            <strong><span t-att-style="style" t-esc="totales['t_pasivo_capital']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                          </td>                          
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </t>
+    </t>
+</template>
+</odoo>
