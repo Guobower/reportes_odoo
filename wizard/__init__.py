@@ -4,3 +4,5 @@
 import wizard_trial_balance
 import wizard_general_balance
 import wizard_report_results
+import wizard_daily
+import wizard_ledger

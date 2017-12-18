@@ -34,7 +34,7 @@
         <field name="target">new</field>
     </record>
   
-  <menuitem id="menu_finance_legal_statement_ecosoft" name="Reportes Ecosoft" parent="account.menu_finance_reports" sequence="14"/>
+  <menuitem id="menu_finance_legal_statement_ecosoft" name="Reportes Ecosoft - Igusa" parent="account.menu_finance_reports" sequence="10"/>
   
     <menuitem id="menu_trial_Balance_report"
         name="Balanza de Comprobación"

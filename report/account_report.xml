@@ -28,5 +28,23 @@
             name="account.report_results_ecosoft"
             file="account.report_results_ecosoft"
             />
+
+        <report 
+            id="action_report_daily_ecosoft"
+            model="account.daily.report"
+            string="Libro diario Ecosoft"
+            report_type="qweb-pdf"
+            name="account.report_daily_ecosoft"
+            file="account.report_daily_ecosoft"
+            />
+
+        <report 
+            id="action_report_ledger_ecosoft"
+            model="account.ledger.report"
+            string="Libro mayor Ecosoft"
+            report_type="qweb-pdf"
+            name="account.report_ledger_ecosoft"
+            file="account.report_ledger_ecosoft"
+            />
     </data>
 </odoo>

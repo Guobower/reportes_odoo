@@ -2,14 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Reporte de Balanza de Comprobacion',
+    'name': 'Reportes de contabilidad Ecosoft',
     'version': '0.1',
-    'summary': 'Reporte de Balanza de Comprobacion',
-    'author': 'Ecosoft',
+    'summary': 'Reporte balanza de comprobación, Belanace general, Estado de resultados, Libro diario y Libro mayor',
+    'author': 'Abraham Martínez y Antonio Silva ',
     'description': """
-Reporte de Balanza de Comprobacion
+Reportes de Ecosoft
     """,
-    'website': 'www.ecosoft.mx.com',
+    'website': 'www.ecosoft.com.mx',
     'depends': ['account','account_period_and_fiscalyear','l10n_mx_account_tree'],
     'category': 'Hidden',
     'sequence': 20,
@@ -18,10 +18,14 @@ Reporte de Balanza de Comprobacion
         'wizard/wizard_trial_balance_views.xml',
         'wizard/wizard_general_balance_views.xml',
         'wizard/wizard_report_results_views.xml',
+        'wizard/wizard_daily_views.xml',
+        'wizard/wizard_ledger_views.xml',
         'report/account_report.xml',
         'views/report_trialbalance.xml',
         'views/report_generalbalance.xml',
         'views/report_results.xml',
+        'views/report_daily.xml',
+        'views/report_ledger.xml',
         
     ],
     'test': [

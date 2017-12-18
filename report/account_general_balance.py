@@ -184,4 +184,4 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
             'totales': totales,
             'periodo': with_period and period_data[1]           
         }
-        return self.env['report'].render('account_trial_balance_ecosoft.report_generalbalance_ecosoft', docargs)
+        return self.env['report'].render('account_reports_ecosoft.report_generalbalance_ecosoft', docargs)

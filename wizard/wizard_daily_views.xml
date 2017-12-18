@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_wizard_account_general_balance" model="ir.ui.view">
-        <field name="name">Balance General</field>
-        <field name="model">wizard.general.balance.ecosoft</field>
+    <record id="view_wizard_account_daily" model="ir.ui.view">
+        <field name="name">Libro diario</field>
+        <field name="model">wizard.daily.ecosoft</field>
         <field name="arch" type="xml">
             <form string="Choose your Period">
                 <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', False)]}">
                     Selecciona un Periodo
                 </p>
                 <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', True)]}">
-                    Balance General
+                    Libro diario
                 </p>
                 <group>
                     <field name="choose_period"/>
@@ -17,26 +17,26 @@
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Balance General" type="object" class="btn-primary"/>
+                    <button name="print_report" string="Libro diario" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
     
-    <record id="action_account_general_balance_menu" model="ir.actions.act_window">
-        <field name="name">Balance General</field>
+    <record id="action_account_daily_menu" model="ir.actions.act_window">
+        <field name="name">Libro diario</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">wizard.general.balance.ecosoft</field>
+        <field name="res_model">wizard.daily.ecosoft</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="view_wizard_account_general_balance"/>
+        <field name="view_id" ref="view_wizard_account_daily"/>
         <field name="target">new</field>
     </record>
     
-    <menuitem id="menu_general_Balance_report"
-        name="Balance General"
+    <menuitem id="menu_daily_report"
+        name="Libro Diario"
         parent="menu_finance_legal_statement_ecosoft"
-        action="action_account_general_balance_menu"/>
+        action="action_account_daily_menu"/>
 
 </odoo>

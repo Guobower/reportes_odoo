@@ -4,8 +4,8 @@
 from odoo import api, models, fields, _
 
 
-class WizardGeneralBalance(models.TransientModel):
-    _name = 'wizard.general.balance.ecosoft'
+class WizardDaily(models.TransientModel):
+    _name = 'wizard.daily.ecosoft'
 
     choose_period = fields.Boolean('A un Periodo')
     period_id = fields.Many2one('account.period', 'Periodo', required=False)
@@ -20,6 +20,5 @@ class WizardGeneralBalance(models.TransientModel):
     
     def print_report(self, data):
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])
-        #records = self.env[data['model']].browse(data.get('ids', []))
-        return self.env['report'].get_action(False, 'account.report_generalbalance_ecosoft', data=data)
+        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])        
+        return self.env['report'].get_action(False, 'account.report_daily_ecosoft', data=data)

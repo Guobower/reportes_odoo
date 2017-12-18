@@ -126,4 +126,4 @@ class ReportResultsEcosoft(models.AbstractModel):
             'total_isr_ptu': {'month': 0.0, 'month_sales':0.0, 'balance':0.0, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
             'util_neta': {'month': 0.0, 'month_sales':0.0, 'balance':(t_ingresos - t_costos) - t_gastos_oper + t_gastos_oper + t_gastos_prod_2, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },         
         }
-        return self.env['report'].render('account_trial_balance_ecosoft.report_results_ecosoft', docargs)
+        return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)
