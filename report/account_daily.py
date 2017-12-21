@@ -3,6 +3,7 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
+import datetime
 
 
 class ReportDailyEcosoft(models.AbstractModel):
@@ -67,8 +68,12 @@ class ReportDailyEcosoft(models.AbstractModel):
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
         
-        if with_period :
+        periodo=""
+        if choose_period :
             context.update({'periods': [period_data[0]]})
+            periodo=period_data[1]
+        else: 
+            periodo= datetime.date.today().strftime("%m/%Y")
         
         moves = self.env['account.move'].search([])
         if len(moves) != 1 and False:
@@ -86,6 +91,6 @@ class ReportDailyEcosoft(models.AbstractModel):
             'docs': docs,
             'time': time,
             'Accounts': account_res,            
-            'periodo': with_period and period_data[1]
+            'periodo': periodo
         }
         return self.env['report'].render('account_reports_ecosoft.report_daily_ecosoft', docargs)

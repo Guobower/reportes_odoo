@@ -3,6 +3,7 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
+import datetime
 
 """
 GASTOS_OPER
@@ -52,78 +53,179 @@ class ReportResultsEcosoft(models.AbstractModel):
 
     def calc_total (self, lista):
         t=0
-        for a in lista:
-            t= t+a.balance
-        return t
+
+        total= {
+            'month': reduce(lambda x, y : x + y , [ c ['month'] for c in lista ]), 
+            #'month_sales': 100.0, 
+            'acum_month': reduce(lambda x, y : x + y , [ c ['acum_month'] for c in lista ]), 
+            #'balance_sales': 100.0, 
+            'average': reduce(lambda x, y : x + y , [ c ['average'] for c in lista ]), 
+            'acum': reduce(lambda x, y : x + y , [ c ['acum'] for c in lista ]) 
+        }
+        total['month_sales'] = 100.0 if total['month']!=0 else 0.0
+        total['balance_sales'] = 100.0 if total['acum_month']!=0 else 0.0
+
+        return total
+    
+    def calc_data(self, lista, context, choose_period, period_data):        
+        resultados=[]
+        print period_data;
+        if choose_period:
+            month=int (period_data[1].split("/")[0])
+            print month
+            for a in lista:
+                result={}
+                print (str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
+                    + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
+                result['name'] = a.name
+                result['acum_month'] = a.with_context(context).argil_balance_all 
+                result['month'] =  a.with_context(context).debit - a.with_context(context).credit
+                result['month_sales'] = 0.0
+                result['balance_sales'] = 0.0
+                result['average'] = a.with_context(context).argil_balance_all/month
+                result['acum'] = a.with_context(context).balance
+                resultados.append(result)
+        else:
+            month= datetime.date.today().month
+            print month
+            for a in lista:
+                result={}
+                print ( str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
+                    + "---" +  str  (a.debit) + "---" +  str(a.credit))
+                result['name'] = a.name
+                result['acum_month'] =a.argil_balance_all 
+                result['month'] =  a.debit - a.credit
+                result['month_sales'] = 0.0
+                result['balance_sales'] = 0.0
+                result['average'] = a.argil_balance_all/month
+                result['acum'] = a.balance
+                resultados.append(result)
+
+        totales = self.calc_total(resultados)
+        for a in resultados:
+            if totales['month'] != 0:
+                a['month_sales']=round (a['month']/(totales['month']/100), 2)
+            else: 
+                a['month_sales']=0.0    
+            if totales['acum_month'] !=0: 
+                a['balance_sales']= round(a['acum_month']/(totales['acum_month']/100), 2)
+            else:
+                a['balance_sales']=0.0
+
+        out={
+            'resultados':resultados,
+            'totales':totales
+        }
+
+        return out
+
 
     
-    def calc_data(self, lista):        
-        resultados=[]
-        
-        for a in lista:
-            result={}
-            result['name'] = a.name
-            result['balance'] = a.balance
-            result['month'] = 0.0
-            result['month_sales'] = 0.0
-            result['balance_sales'] = 0.0
-            result['average'] = 0.0
-            result['acum'] = result['balance_sales']
-            resultados.append(result)
-        return resultados
 
     @api.model
     def render_html(self, wizard, data=None):
+
+        context = self._context.copy()
+        
+        period_data = data['form'].get('period_id', False)
+        choose_period = data['form'].get('choose_period', False)
+        #print str (period_data) + str(choose_period) + str(period_data[0]) + str(len (period_data))
+        #with_period = period_data and choose_period
+        periodo=""
+        if choose_period :
+            context.update({'periods': [period_data[0]]})
+            periodo=period_data[1]
+        else: 
+            periodo= datetime.date.today().strftime("%m/%Y")
+
         ingresos_a = self.env['account.account'].browse(INGRESOS)
-        ingresos=self.calc_data(ingresos_a)
-        t_ingresos=self.calc_total(ingresos_a)                
+        out=self.calc_data(ingresos_a, context, choose_period, period_data)
+        ingresos=out['resultados']
+        t_ingresos=out['totales']
         
         costos_a = self.env['account.account'].browse(COSTOS)
-        costos=self.calc_data(costos_a)
-        t_costos=self.calc_total(costos_a)
+        out=self.calc_data(costos_a, context, choose_period, period_data)
+        costos=out['resultados']
+        t_costos=out['totales']
         
         gastos_oper_a = self.env['account.account'].browse(GASTOS_OPER)
-        gastos_oper=self.calc_data(gastos_oper_a)
-        t_gastos_oper=self.calc_total(gastos_oper_a)
+        out=self.calc_data(gastos_oper_a, context, choose_period, period_data)
+        gastos_oper=out['resultados']
+        t_gastos_oper=out['totales']
 
         gastos_prod_a = self.env['account.account'].browse(GASTOS_PROD)
-        gastos_prod=self.calc_data(gastos_prod_a)
-        t_gastos_prod=self.calc_total(gastos_prod_a)
+        out=self.calc_data(gastos_prod_a, context, choose_period,  period_data)
+        gastos_prod=out['resultados']
+        t_gastos_prod=out['totales']
 
         gastos_prod_2_a = self.env['account.account'].browse(GASTOS_PROD_2)
-        gastos_prod_2=self.calc_data(gastos_prod_2_a)
-        t_gastos_prod_2=self.calc_total(gastos_prod_2_a)
+        out=self.calc_data(gastos_prod_2_a, context, choose_period, period_data)
+        gastos_prod_2=out['resultados']
+        t_gastos_prod_2=out['totales']
         
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
 
+        
+        def suma(accumulator, element):
+            for key, value in element.items():
+                if key == "month_sales" or key == "balance_sales":
+                    if value!=0:
+                        accumulator[key] = 100.0
+                    else:                        
+                        accumulator[key] = accumulator.get(key, 0) + value
+                else:
+                    accumulator[key] = accumulator.get(key, 0) + value
+            return accumulator
 
-        totales = {
-            
-            }
+        def resta(accumulator, element):
+            for key, value in element.items():
+                if key == "month_sales" or key == "balance_sales":
+                    if value!=0:
+                        accumulator[key] = 100.0
+                    else:                        
+                        accumulator[key] = accumulator.get(key, 0) + value                    
+                else:
+                    accumulator[key] = accumulator.get(key, 0) - value
+            return accumulator
+
+
+        utilidad_bruta = reduce(suma, [t_ingresos, t_costos], {})
+
+        
+        #print str (t_ingresos)  + " - " + str(utilidad_bruta) + " - " + str (t_costos)
+        utilidad_oper = reduce(resta, [utilidad_bruta, t_costos], {}) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
+        total_util_oper = reduce(resta, [utilidad_bruta, t_costos], {}) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
+        gtos_prod_fin = reduce(resta, [utilidad_bruta, t_costos], {})
+        utilidad_perd = reduce(suma, [total_util_oper, t_gastos_prod_2], {}) #dict (Counter( total_util_oper) + Counter(t_gastos_prod_2))
+        total_isr_ptu = reduce(suma, [total_util_oper, t_gastos_prod_2], {})
+        util_neta = reduce(suma, [total_util_oper, t_gastos_prod_2], {})
+        print util_neta
+
         docargs = {
             'doc_ids': self.ids,
             'doc_model': self.model,
             'data': data['form'],
             'docs': docs,
             'time': time,
+            'periodo':periodo,
             'ingresos': ingresos,
             'costos': costos,
             'gastos_oper': gastos_oper,
             'gastos_prod': gastos_prod,
             'gastos_prod_2': gastos_prod_2, 
-            't_ingresos':{'month': 0.0, 'month_sales':0.0, 'balance':t_ingresos, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 } ,
-            't_costos':{'month': 0.0, 'month_sales':0.0, 'balance':t_costos, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 } ,
-            't_gastos_oper': {'month': 0.0, 'month_sales':0.0, 'balance':t_gastos_oper, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            't_gastos_prod': {'month': 0.0, 'month_sales':0.0, 'balance':t_gastos_prod, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            't_gastos_prod_2': {'month': 0.0, 'month_sales':0.0, 'balance':t_gastos_prod_2, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'utilidad_bruta': {'month': 0.0, 'month_sales':0.0, 'balance':t_ingresos - t_costos, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'utilidad_oper': {'month': 0.0, 'month_sales':0.0, 'balance':(t_ingresos - t_costos) - t_gastos_oper, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'total_util_oper': {'month': 0.0, 'month_sales':0.0, 'balance':(t_ingresos - t_costos) - t_gastos_oper, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'gtos_prod_fin':  {'month': 0.0, 'month_sales':0.0, 'balance':0.0, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 }, 
-            'utilidad_perd': {'month': 0.0, 'month_sales':0.0, 'balance':(t_ingresos - t_costos) - t_gastos_oper + t_gastos_oper + t_gastos_prod_2, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'total_isr_ptu': {'month': 0.0, 'month_sales':0.0, 'balance':0.0, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },
-            'util_neta': {'month': 0.0, 'month_sales':0.0, 'balance':(t_ingresos - t_costos) - t_gastos_oper + t_gastos_oper + t_gastos_prod_2, 'balance_sales':0.0, 'average':0.0, 'acum':0.0 },         
+            't_ingresos':t_ingresos,
+            't_costos':t_costos,
+            't_gastos_oper': t_gastos_oper, 
+            't_gastos_prod': t_gastos_prod,
+            't_gastos_prod_2': t_gastos_prod_2,
+            'utilidad_bruta': utilidad_bruta,
+            'utilidad_oper': utilidad_oper,
+            'total_util_oper': total_util_oper,
+            'gtos_prod_fin': gtos_prod_fin,
+            'utilidad_perd': utilidad_perd, 
+            'total_isr_ptu': total_isr_ptu, 
+            'util_neta': util_neta 
         }
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)

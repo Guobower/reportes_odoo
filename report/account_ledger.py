@@ -3,6 +3,7 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
+import datetime
 
 
 class ReportLedgerEcosoft(models.AbstractModel):
@@ -48,8 +49,12 @@ class ReportLedgerEcosoft(models.AbstractModel):
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
         
-        if with_period :
+        periodo=""
+        if choose_period :
             context.update({'periods': [period_data[0]]})
+            periodo=period_data[1]
+        else: 
+            periodo= datetime.date.today().strftime("%m/%Y")
         
         account = self.env['account.account'].search([('level','=',1)], order="code asc")
         if len(account) != 1 and False:
@@ -68,6 +73,6 @@ class ReportLedgerEcosoft(models.AbstractModel):
             'time': time,
             'Accounts': account_res,
             #'totales': totales,
-            'periodo': with_period and period_data[1]
+            'periodo': periodo
         }
         return self.env['report'].render('account_reports_ecosoft.report_ledger_ecosoft', docargs)

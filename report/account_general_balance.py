@@ -3,7 +3,7 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
-from functools import reduce
+import datetime
 
 """
 ACTIVOS_CIRCULANTE_IDS
@@ -108,12 +108,13 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
             t= t+a['balance']
         return t
 
-    def calc_data (self, lista, period_data, context):
+    def calc_data (self, lista, choose_period, context):
         results=[]
-        if period_data:
+        if choose_period:
             for a in lista:
+                print a.with_context(context).argil_balance_all
                 result={
-                    'balance' : a.with_context(context).balance,
+                    'balance' : a.with_context(context).argil_balance_all,
                     'name' : a.with_context(context).name
                 }
                 results.append(result)
@@ -133,26 +134,30 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
         
-        if with_period :
+        periodo=""
+        if choose_period :
             context.update({'periods': [period_data[0]]})
+            periodo=period_data[1]
+        else: 
+            periodo= datetime.date.today().strftime("%m/%Y")
         
 
         activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
-        activo_circulante=self.calc_data(activo_circulante, period_data, context)
+        activo_circulante=self.calc_data(activo_circulante, choose_period, context)
         t_activo_circulante=self.calc_total(activo_circulante) 
                        
         #t_activo_circulante = reduce ((lambda x,y: x + y), activo_circulante)
         #print 'total:' + str(t_activo_circulante)
         activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
-        activo_no_circulante=self.calc_data(activo_no_circulante, period_data, context)
+        activo_no_circulante=self.calc_data(activo_no_circulante, choose_period, context)
         t_activo_no_circulante=self.calc_total(activo_no_circulante)
         
         activo_diferido = self.env['account.account'].browse(ACTIVOS_DIFERIDO)
-        activo_diferido=self.calc_data(activo_diferido, period_data, context)
+        activo_diferido=self.calc_data(activo_diferido, choose_period, context)
         t_activo_diferido=self.calc_total(activo_diferido)
 
         pasivo_corto_plazo = self.env['account.account'].browse(PASIVO_CORTO_PLAZO)
-        pasivo_corto_plazo=self.calc_data(pasivo_corto_plazo, period_data, context)
+        pasivo_corto_plazo=self.calc_data(pasivo_corto_plazo, choose_period, context)
         t_pasivo_corto_plazo=self.calc_total(pasivo_corto_plazo)
 
         capital = self.env['account.account'].browse(CAPITAL)
@@ -182,6 +187,6 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
             'pasivo_corto_plazo': pasivo_corto_plazo,
             'capital': capital, 
             'totales': totales,
-            'periodo': with_period and period_data[1]           
+            'periodo': periodo           
         }
         return self.env['report'].render('account_reports_ecosoft.report_generalbalance_ecosoft', docargs)
