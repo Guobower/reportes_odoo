@@ -10,53 +10,44 @@ class ReportDailyEcosoft(models.AbstractModel):
     _name = 'report.account.report_daily_ecosoft'
 
   
-    def get_lines(self, lista):
-        results=[]
-        #print 'lines ' + str(lista)
-        for l in lista:
-            #account = self.env['account.account'].browse([l.account_id])
+    def get_lines(self, lista, choose_period, periodo, context):
+        results=[]        
+        for l in lista:            
             l_map={
                 'code': l.account_id.code, #account.code,
                 'depto': l.ref,
                 'desc': l.account_id.name, #account.name, 
-                'concept': l.name,  
-                'credit': l.credit,
-                'debit': l.debit
+                'concept': l.name                
             }
+            if choose_period:                
+                l_map['credit']=l.with_context(context).credit
+                l_map['debit']=l.with_context(context).debit
+
+            else:                
+                l_map['credit']=l.credit
+                l_map['debit']=l.debit
+
             results.append(l_map)
         return results
 
 
 
-    def calc_data (self, lista, period_data, context):
+    def calc_data (self, lista, choose_period, context, periodo):
         results=[]
-        if period_data:
-            for a in lista:
-                result={
-                    'type' : a.state,
-                    'num' : a.id,
-                    'date' : a.with_context(context).period_id,
-                    'concept' : a.name,
-                    'moves': self.get_lines(line_ids)                
-                }
-                #s = reduce(lambda
-
-                result['total_credit'] = reduce(lambda x, y : x + y , [ c ['credit'] for c in result['moves'] ])
-                result['total_debit'] = reduce(lambda x, y : x + y , [ c ['debit'] for c in result['moves'] ])
-                results.append(result)
-        else:
-            for a in lista:
-                result={
-                    'type' : a.ref,
-                    'num' : a.id,
-                    'date' : a.period_id.name,
-                    'concept' : a.name,
-                    'moves': self.get_lines(a.line_ids)                
-                }
-                
-                result['total_credit']=reduce(lambda x, y : x + y , [ c ['credit'] for c in result['moves'] ])
-                result['total_debit']=reduce(lambda x, y : x + y , [ c ['debit'] for c in result['moves'] ])
-                results.append(result)
+        
+        for a in lista:
+            result={
+                'type' : a.state,
+                'num' : a.id,
+                'date' : periodo, #a.with_context(context).period_id.name,
+                'concept' : a.name,
+                'moves': self.get_lines(a.line_ids, choose_period, periodo, context)                
+            }
+           
+            result['total_credit'] = reduce(lambda x, y : x + y , [ c ['credit'] for c in result['moves'] ])
+            result['total_debit'] = reduce(lambda x, y : x + y , [ c ['debit'] for c in result['moves'] ])
+            results.append(result)
+       
         return results 
 
 
@@ -79,7 +70,7 @@ class ReportDailyEcosoft(models.AbstractModel):
         if len(moves) != 1 and False:
             raise UserError(_("No hay una moves ."))
         
-        account_res = self.calc_data(moves , period_data, context)
+        account_res = self.calc_data(moves , choose_period, context, periodo)
         
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))

@@ -10,15 +10,15 @@ class ReportLedgerEcosoft(models.AbstractModel):
     _name = 'report.account.report_ledger_ecosoft'
 
   
-    def calc_data ( self, lista, period_data, context):
+    def calc_data ( self, lista, choose_period, context, periodo):
         results=[]
-        if period_data:
+        if choose_period:
             for a in lista:
                 result={
                     'balance' : a.with_context(context).balance,
                     'name' : a.with_context(context).name,
                     'code' : a.with_context(context).code,
-                    'period' : a.with_context(context).write_date,
+                    'period': periodo, #a.with_context(context).write_date,
                     'acum' : a.with_context(context).argil_balance_all,
                     'init_balance': a.with_context(context).argil_initial_balance,
                     'credit' : a.with_context(context).name,
@@ -32,7 +32,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
                     'balance' : a.balance,
                     'name' : a.name,
                     'code' : a.code,
-                    'period': a.write_date,
+                    'period': periodo, #a.write_date,
                     'acum': a.argil_balance_all,
                     'init_balance': a.argil_initial_balance,
                     'credit' : a.credit,
@@ -60,7 +60,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
         if len(account) != 1 and False:
             raise UserError(_("No hay una cuenta padre unica."))
         
-        account_res = self.calc_data(account,period_data, context)
+        account_res = self.calc_data(account,choose_period, context, periodo)
       
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
@@ -71,8 +71,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
             'data': data['form'],
             'docs': docs,
             'time': time,
-            'Accounts': account_res,
-            #'totales': totales,
+            'Accounts': account_res,            
             'periodo': periodo
         }
         return self.env['report'].render('account_reports_ecosoft.report_ledger_ecosoft', docargs)

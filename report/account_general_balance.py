@@ -145,9 +145,7 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
         activo_circulante=self.calc_data(activo_circulante, choose_period, context)
         t_activo_circulante=self.calc_total(activo_circulante) 
-                       
-        #t_activo_circulante = reduce ((lambda x,y: x + y), activo_circulante)
-        #print 'total:' + str(t_activo_circulante)
+                               
         activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
         activo_no_circulante=self.calc_data(activo_no_circulante, choose_period, context)
         t_activo_no_circulante=self.calc_total(activo_no_circulante)

@@ -129,8 +129,7 @@ class ReportResultsEcosoft(models.AbstractModel):
         
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
-        #print str (period_data) + str(choose_period) + str(period_data[0]) + str(len (period_data))
-        #with_period = period_data and choose_period
+       
         periodo=""
         if choose_period :
             context.update({'periods': [period_data[0]]})

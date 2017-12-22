@@ -54,9 +54,6 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         if len(account) != 1 and False:
             raise UserError(_("No hay una cuenta padre unica."))
         
-
-        #print account.name +  str (account.id)
-        
         
         account_list = []
         self._get_accounts(account[0], account_list)
