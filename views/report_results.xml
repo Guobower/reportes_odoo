@@ -70,19 +70,19 @@
                             <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['month_sales']" />
+                            % <span t-att-style="style" t-esc="account['month_sales']" />
                           </td>
                            <td  class="text-right">
                             <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['balance_sales']" />
+                            % <span t-att-style="style" t-esc="account['balance_sales']" />
                           </td>
                           <td  class="text-right">
                             <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                           <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            % <span t-att-style="style" t-esc="account['acum']"/>
                           </td>
                         </tr>
                         <tr>
@@ -93,19 +93,19 @@
                             <strong><span t-att-style="style" t-esc="t_ingresos['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_ingresos['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_ingresos['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_ingresos['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_ingresos['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_ingresos['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_ingresos['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_ingresos['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_ingresos['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -125,19 +125,19 @@
                             <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['month_sales']"/>
+                            %  <span t-att-style="style" t-esc="account['month_sales']"/>
                           </td>
                            <td  class="text-right">
                             <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['balance_sales']"/>
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
                           </td>
                           <td  class="text-right">
                             <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                           <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            % <span t-att-style="style" t-esc="account['acum']"/>
                           </td>
                         </tr>
                         <tr>
@@ -148,19 +148,19 @@
                             <strong><span t-att-style="style" t-esc="t_costos['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_costos['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_costos['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_costos['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_costos['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_costos['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_costos['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_costos['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_costos['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -176,19 +176,19 @@
                             <strong><span t-att-style="style" t-esc="utilidad_bruta['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_bruta['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_bruta['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="utilidad_bruta['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_bruta['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_bruta['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="utilidad_bruta['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_bruta['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_bruta['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -208,19 +208,19 @@
                             <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['month_sales']"/>
+                            % <span t-att-style="style" t-esc="account['month_sales']"/>
                           </td>
                            <td  class="text-right">
                             <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['balance_sales']"/>
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
                           </td>
                           <td  class="text-right">
                             <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                           <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            % <span t-att-style="style" t-esc="account['acum']"/>
                           </td>
                         </tr>
                         <tr>
@@ -231,19 +231,19 @@
                             <strong><span t-att-style="style" t-esc="t_gastos_oper['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_oper['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_oper['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_oper['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_oper['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_oper['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_oper['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_oper['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_oper['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -259,19 +259,19 @@
                             <strong><span t-att-style="style" t-esc="utilidad_oper['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_oper['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_oper['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="utilidad_oper['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_oper['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_oper['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="utilidad_oper['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="utilidad_oper['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_oper['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -287,19 +287,19 @@
                             <strong><span t-att-style="style" t-esc="total_util_oper['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_util_oper['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_util_oper['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="total_util_oper['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_util_oper['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_util_oper['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="total_util_oper['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_util_oper['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_util_oper['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -319,19 +319,19 @@
                             <strong><span t-att-style="style" t-esc="gtos_prod_fin['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="gtos_prod_fin['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="gtos_prod_fin['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -351,19 +351,19 @@
                             <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['month_sales']"/>
+                            % <span t-att-style="style" t-esc="account['month_sales']"/>
                           </td>
                            <td  class="text-right">
                             <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['balance_sales']"/>
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
                           </td>
                           <td  class="text-right">
                             <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                           <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            % <span t-att-style="style" t-esc="account['acum']"/>
                           </td>
                         </tr>
                         <tr>
@@ -374,19 +374,19 @@
                             <strong><span t-att-style="style" t-esc="t_gastos_prod['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -402,19 +402,19 @@
                             <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['month_sales']"/>
+                            % <span t-att-style="style" t-esc="account['month_sales']"/>
                           </td>
                            <td  class="text-right">
                             <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                            <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['balance_sales']"/>
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
                           </td>
                           <td  class="text-right">
                             <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                           </td>
                           <td  class="text-right">
-                            <span t-att-style="style" t-esc="account['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            % <span t-att-style="style" t-esc="account['acum']"/>
                           </td>
                         </tr>
                         <tr>
@@ -425,19 +425,19 @@
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -453,19 +453,19 @@
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="t_gastos_prod_2['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -485,19 +485,19 @@
                             <strong><span t-att-style="style" t-esc="total_isr_ptu['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="total_isr_ptu['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="total_isr_ptu['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -513,19 +513,19 @@
                             <strong><span t-att-style="style" t-esc="util_neta['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="util_neta['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="util_neta['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="util_neta['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
                             <strong><span t-att-style="style" t-esc="util_neta['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['acum']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="util_neta['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
