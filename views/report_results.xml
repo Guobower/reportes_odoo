@@ -309,29 +309,52 @@
                   <strong>GTOS Y PRODUCTOS FINANC.</strong>
                 </p>
 
-                <table class="table table-condensed" style="font-size: 10px;">                    
-                    <tbody>                        
+                 <table class="table table-condensed" style="font-size: 10px;">                    
+                    <tbody>
+                        <tr t-foreach="gastos_prod_fin" t-as="account">
+                          <td style="width: 35%">
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                           <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['month_sales']"/>
+                          </td>
+                           <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                           <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                          <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['acum']"/>
+                          </td>
+                        </tr>
                         <tr>
-                          <td  style="width: 35%">
+                          <td class="text-right" style="width: 35%">
                             <strong>GTOS. Y PROD. FINAN.</strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_gastos_prod_fin['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_fin['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_gastos_prod_fin['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_fin['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="gtos_prod_fin['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_gastos_prod_fin['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="gtos_prod_fin['acum']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_fin['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
@@ -475,61 +498,113 @@
                   <strong>IMPTOS.</strong>
                 </p>
 
-                  <table class="table table-condensed" style="font-size: 10px;">                    
-                    <tbody>                        
-                        <tr>
+                 <table class="table table-condensed" style="font-size: 10px;">                    
+                    <tbody>
+                        <tr t-foreach="imptos" t-as="account">
                           <td style="width: 35%">
+                            <span t-att-style="style" t-esc="account['name']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                           <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['month_sales']"/>
+                          </td>
+                           <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                           <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['balance_sales']"/>
+                          </td>
+                          <td  class="text-right">
+                            <span t-att-style="style" t-esc="account['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                          </td>
+                          <td  class="text-right">
+                            % <span t-att-style="style" t-esc="account['acum']"/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="text-right" style="width: 35%">
                             <strong>TOTAL DE ISR Y PTU:</strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_imptos['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_imptos['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_imptos['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_imptos['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="total_isr_ptu['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="t_imptos['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="total_isr_ptu['acum']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="t_imptos['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
                 </table>
 
-                  <table class="table table-condensed" style="font-size: 10px;">                    
-                    <tbody>                        
-                        <tr>
-                          <td class="text-right" style="width: 35%">
-                            <strong>UTILIDAD NETA:</strong>
-                          </td>
-                          <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
-                          </td>
-                           <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="util_neta['month_sales']"/></strong>
-                          </td>
-                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
-                          </td>
-                           <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="util_neta['balance_sales']"/></strong>
-                          </td>
-                          <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="util_neta['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
-                          </td>
-                          <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="util_neta['acum']"/></strong>
-                          </td>                         
-                        </tr>
-                    </tbody>
-                </table>                
+                <table class="table table-condensed" style="font-size: 10px;">                    
+                  <tbody>                        
+                      <tr>
+                        <td class="text-center" style="width: 35%">
+                          <strong>UTILIDAD NETA:</strong>
+                        </td>
+                        <td  class="text-right">
+                          <strong><span t-att-style="style" t-esc="util_neta['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                        </td>
+                         <td  class="text-right">
+                          <strong> % <span t-att-style="style" t-esc="util_neta['month_sales']"/></strong>
+                        </td>
+                         <td  class="text-right">
+                          <strong><span t-att-style="style" t-esc="util_neta['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                        </td>
+                         <td  class="text-right">
+                          <strong> % <span t-att-style="style" t-esc="util_neta['balance_sales']"/></strong>
+                        </td>
+                        <td  class="text-right">
+                          <strong><span t-att-style="style" t-esc="util_neta['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                        </td>
+                        <td  class="text-right">
+                          <strong> % <span t-att-style="style" t-esc="util_neta['acum']"/></strong>
+                        </td>                         
+                      </tr>
+                  </tbody>
+              </table> 
+              
+                <table style="width: 80%">     
+                  <tr>
+                        <td class="text-center">
+                          <h5> GERENTE GENERAL</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5> GERENTE ADMINISTRATIVO</h5>
+                        </td>
+                   </tr>
+                  
+                   <tr>     
+                        <td class="text-center">
+                          <h5> -----------------------------------------------------</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5> -----------------------------------------------------</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                          <h5>ING. VANESA LLANO RAMIREZ</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5> C.P. JAVIER JIMENEZ COLIS</h5>
+                        </td>
+                   </tr>
+                </table>
+
             </div>
         </t>
     </t>

@@ -93,11 +93,14 @@ id  |                name
  333 | RESERVA LEGAL
 
 """
+
+"""
 ACTIVOS_CIRCULANTE_IDS=[33, 3, 9, 8, 10, 6, 15, 12, 14]
 ACTIVOS_NO_CIRCULANTE_IDS=[20, 18, 19, 22, 23, 21,26, 25, 16, 17]
 ACTIVOS_DIFERIDO=[24, 13, 7]
 PASIVO_CORTO_PLAZO=[31, 32, 35, 27, 37, 28, 29, 39, 42, 38, 40, 43, 41]
 CAPITAL=[45, 46, 48, 49]
+"""
 
 class ReportGeneralBalanceEcosoft(models.AbstractModel):
     _name = 'report.account.report_generalbalance_ecosoft'
@@ -112,7 +115,7 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         results=[]
         if choose_period:
             for a in lista:
-                print a.with_context(context).balance
+                #print a.with_context(context).balance
                 result={
                     'balance' : a.with_context(context).balance,
                     'name' : a.with_context(context).name
@@ -142,24 +145,28 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
             periodo= datetime.date.today().strftime("%m/%Y")
         
 
-        activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
+        #activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
+        activo_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO CIRCULANTE')]).account_ids
         activo_circulante=self.calc_data(activo_circulante, choose_period, context)
         t_activo_circulante=self.calc_total(activo_circulante) 
                                
-        activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
-        #activo_no_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO NO CIRCULANTE')]).account_ids
+        #activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
+        activo_no_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO NO CIRCULANTE')]).account_ids
         activo_no_circulante=self.calc_data(activo_no_circulante, choose_period, context)
         t_activo_no_circulante=self.calc_total(activo_no_circulante)
         
-        activo_diferido = self.env['account.account'].browse(ACTIVOS_DIFERIDO)
+        #activo_diferido = self.env['account.account'].browse(ACTIVOS_DIFERIDO)
+        activo_diferido = self.env['account.financial.report'].search([('name','=','ACTIVO DIFERIDO')]).account_ids
         activo_diferido=self.calc_data(activo_diferido, choose_period, context)
         t_activo_diferido=self.calc_total(activo_diferido)
 
-        pasivo_corto_plazo = self.env['account.account'].browse(PASIVO_CORTO_PLAZO)
+        #pasivo_corto_plazo = self.env['account.account'].browse(PASIVO_CORTO_PLAZO)
+        pasivo_corto_plazo = self.env['account.financial.report'].search([('name','=','PASIVO CORTO PLAZO')]).account_ids
         pasivo_corto_plazo=self.calc_data(pasivo_corto_plazo, choose_period, context)
         t_pasivo_corto_plazo=self.calc_total(pasivo_corto_plazo)
 
-        capital = self.env['account.account'].browse(CAPITAL)
+        #capital = self.env['account.account'].browse(CAPITAL)
+        capital = self.env['account.financial.report'].search([('name','=','CAPITAL')]).account_ids
         capital=self.calc_data(capital, period_data, context)
         t_capital=self.calc_total(capital)
         
