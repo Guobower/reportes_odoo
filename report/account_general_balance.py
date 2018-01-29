@@ -93,11 +93,11 @@ id  |                name
  333 | RESERVA LEGAL
 
 """
-ACTIVOS_CIRCULANTE_IDS=[33, 3, 9, 10, 6, 15, 12, 14]
+ACTIVOS_CIRCULANTE_IDS=[33, 3, 9, 8, 10, 6, 15, 12, 14]
 ACTIVOS_NO_CIRCULANTE_IDS=[20, 18, 19, 22, 23, 21,26, 25, 16, 17]
 ACTIVOS_DIFERIDO=[24, 13, 7]
-PASIVO_CORTO_PLAZO=[31, 35, 27, 37, 28, 29, 39, 42, 38, 40, 43, 41]
-CAPITAL=[45, 46, 48]
+PASIVO_CORTO_PLAZO=[31, 32, 35, 27, 37, 28, 29, 39, 42, 38, 40, 43, 41]
+CAPITAL=[45, 46, 48, 49]
 
 class ReportGeneralBalanceEcosoft(models.AbstractModel):
     _name = 'report.account.report_generalbalance_ecosoft'
@@ -112,9 +112,9 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         results=[]
         if choose_period:
             for a in lista:
-                print a.with_context(context).argil_balance_all
+                print a.with_context(context).balance
                 result={
-                    'balance' : a.with_context(context).argil_balance_all,
+                    'balance' : a.with_context(context).balance,
                     'name' : a.with_context(context).name
                 }
                 results.append(result)
@@ -147,6 +147,7 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         t_activo_circulante=self.calc_total(activo_circulante) 
                                
         activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
+        #activo_no_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO NO CIRCULANTE')]).account_ids
         activo_no_circulante=self.calc_data(activo_no_circulante, choose_period, context)
         t_activo_no_circulante=self.calc_total(activo_no_circulante)
         

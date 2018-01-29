@@ -146,7 +146,7 @@
                 <table class="table table-condensed" style="font-size: 10px;">
                     
                     <tbody>
-                        <tr t-foreach="activo_diferido" t-as="account">
+                        <tr t-foreach="pasivo_corto_plazo" t-as="account">
                           <td >
                             <span t-att-style="style" t-esc="account['name']"/>
                           </td>

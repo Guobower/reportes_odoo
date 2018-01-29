@@ -42,9 +42,9 @@ select id, name from account_account where name in  ('CORTESÍAS A CLIENTES', 'S
  484 | RENTA DE INMUEBLES
 (21 rows)
 """
-INGRESOS= [51,52]
+INGRESOS= [50,52]
 COSTOS=[53]
-GASTOS_OPER=[68, 71, 82, 85, 69, 72, 75, 64, 74, 78, 83, 86]
+GASTOS_OPER=[57, 56, 68, 71, 70, 73, 80, 82, 85, 69, 72, 75, 64, 74, 78, 83, 86, 420]
 GASTOS_PROD=[89, 92]
 GASTOS_PROD_2=[87, 90]
 
@@ -105,7 +105,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                     + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
                 result['name'] = a.name
                 result['acum_month'] = a.with_context(context).argil_balance_all 
-                result['month'] =  abs (a.with_context(context).debit - a.with_context(context).credit)
+                result['month'] = a.with_context(context).balance #a.with_context(context).credit - a.with_context(context).debit
                 result['month_sales'] = 0.0
                 result['balance_sales'] = 0.0
                 result['average'] = a.with_context(context).argil_balance_all/month
@@ -120,7 +120,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                     + "---" +  str  (a.debit) + "---" +  str(a.credit))
                 result['name'] = a.name
                 result['acum_month'] =a.argil_balance_all 
-                result['month'] =  abs (a.debit - a.credit)
+                result['month'] =  a.balance #a.credit - a.debit
                 result['month_sales'] = 0.0
                 result['balance_sales'] = 0.0
                 result['average'] = a.argil_balance_all/month
@@ -212,11 +212,12 @@ class ReportResultsEcosoft(models.AbstractModel):
 
         utilidad_bruta = resta (t_ingresos, t_costos)       
         #print str (t_ingresos)  + " - " + str(utilidad_bruta) + " - " + str (t_costos)
-        utilidad_oper = resta (t_gastos_oper, utilidad_bruta) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
+        utilidad_oper = resta (utilidad_bruta, t_gastos_oper) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
         total_util_oper = utilidad_oper #reduce(resta, [utilidad_bruta, t_costos], {}) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
         gtos_prod_fin = resta(utilidad_oper, total_util_oper)
-        utilidad_perd = suma (t_gastos_prod, t_gastos_prod_2) #dict (Counter( total_util_oper) + Counter(t_gastos_prod_2))
-        total_isr_ptu = resta(utilidad_perd, gtos_prod_fin)
+        aux = suma (total_util_oper, t_gastos_prod )
+        utilidad_perd = suma (aux, t_gastos_prod_2) #dict (Counter( total_util_oper) + Counter(t_gastos_prod_2))
+        total_isr_ptu = resta(utilidad_oper, total_util_oper)
         util_neta = suma (utilidad_perd, total_isr_ptu)
         #print util_neta
 
