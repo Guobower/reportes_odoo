@@ -16,13 +16,13 @@ class ReportLedgerEcosoft(models.AbstractModel):
             for a in lista:
                 result={
                     'balance' : a.with_context(context).balance,
-                    'name' : a.with_context(context).name,
-                    'code' : a.with_context(context).code,
+                    'name' : a.name,
+                    'code' : a.code,
                     'period': periodo, #a.with_context(context).write_date,
                     'acum' : a.with_context(context).argil_balance_all,
                     'init_balance': a.with_context(context).argil_initial_balance,
-                    'credit' : a.with_context(context).name,
-                    'debit' : a.with_context(context).code
+                    'credit' : a.with_context(context).credit,
+                    'debit' : a.with_context(context).debit
                 }
                 
                 results.append(result)

@@ -102,7 +102,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                 a['balance_sales']=0.0
             a['acum'] = a['balance_sales']
 
-    def calc_data(self, lista, context, choose_period, period_data, base):        
+    def calc_data(self, lista, context, choose_period, period_data):        
         resultados=[]
         #print period_data;
         if choose_period:
@@ -110,14 +110,14 @@ class ReportResultsEcosoft(models.AbstractModel):
             #print month
             for a in lista:
                 result={}
-                #print (str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
-                 #   + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
+                print ( "Con periodo" +  str (a.with_context(context).balance) + " ---" + str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
+                    + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
                 result['name'] = a.name
-                result['acum_month'] = a.with_context(context).argil_balance_all 
-                result['month'] = a.with_context(context).balance #a.with_context(context).credit - a.with_context(context).debit
+                result['acum_month'] = abs (a.with_context(context).argil_balance_all )
+                result['month'] = abs(a.with_context(context).balance) #a.with_context(context).credit - a.with_context(context).debit
                 result['month_sales'] = 0.0
                 result['balance_sales'] = 0.0
-                result['average'] = a.with_context(context).argil_balance_all/month
+                result['average'] = abs(a.with_context(context).argil_balance_all/month)
                 #result['acum'] = a.with_context(context).balance
                 resultados.append(result)
         else:
@@ -125,42 +125,35 @@ class ReportResultsEcosoft(models.AbstractModel):
             #print month
             for a in lista:
                 result={}
-                #print ( str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
-                 #   + "---" +  str  (a.debit) + "---" +  str(a.credit))
+                print ("Sin periodo" + str (a.balance) + "-------" +  str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
+                    + "---" +  str  (a.debit) + "---" +  str(a.credit))
                 result['name'] = a.name
-                result['acum_month'] =a.argil_balance_all 
-                result['month'] =  a.balance #a.credit - a.debit
+                result['acum_month'] =abs (a.argil_balance_all) 
+                result['month'] =  abs(a.balance) #a.credit - a.debit
                 result['month_sales'] = 0.0
                 result['balance_sales'] = 0.0
-                result['average'] = a.argil_balance_all/month
+                result['average'] = abs(a.argil_balance_all/month)
                 #result['acum'] = a.balance
                 resultados.append(result)
+        return resultados
 
-
-        #print 'base->' +  str (base)
-        if base=={}:
-            resultados[1]['acum_month'] =  -(resultados[1]['acum_month'])
-            resultados[1]['month'] =  -(resultados[1]['month'])
-            resultados[1]['average'] =  -(resultados[1]['average'])
-            #print "no hay base"
+    def total (self,resultados, base):
+        if base=={}:            
             totales = self.calc_total(resultados)
             totales['month_sales'] = 100.0 if totales['month']!=0 else 0.0
             totales['balance_sales'] = 100.0 if totales['acum_month']!=0 else 0.0
             totales['acum'] = totales['balance_sales']
             self.calc_porcent_base(resultados, totales)
-        else:
-            #print "hay base"
+        else:            
             self.calc_porcent(resultados, base)        
             totales = self.calc_total(resultados)
-        out={
-            'resultados':resultados,
-            'totales':totales
-        }
+        return totales    
 
-        return out
-
-
-    
+    def negative (self, m):
+        for key in m:
+            if key != 'name':
+                m[key] = -(m[key])
+        str (m)    
 
     @api.model
     def render_html(self, wizard, data=None):
@@ -179,47 +172,50 @@ class ReportResultsEcosoft(models.AbstractModel):
 
         #ingresos_a = self.env['account.account'].browse(INGRESOS)
         ingresos_a = self.env['account.financial.report'].search([('name','=','INGRESOS')]).account_ids
-        out=self.calc_data(ingresos_a, context, choose_period, period_data, {})
-        ingresos=out['resultados']
-        t_ingresos=out['totales']
+        ingresos=self.calc_data(ingresos_a, context, choose_period, period_data)
+        if len (ingresos) > 1:
+            self.negative(ingresos[1])
+        t_ingresos= self.total (ingresos, {}) # out['totales']
         base = {}
         if ingresos:
             base = ingresos [0]
-        #print 'base' +  str (base)
+        
         
         #costos_a = self.env['account.account'].browse(COSTOS)
         costos_a = self.env['account.financial.report'].search([('name','=','COSTOS')]).account_ids
-        out=self.calc_data(costos_a, context, choose_period, period_data, base)
-        costos=out['resultados']
-        t_costos=out['totales']
+        costos=self.calc_data(costos_a, context, choose_period, period_data)
+        #costos=out['resultados']
+        t_costos=self.total (costos, base)
         
         #gastos_oper_a = self.env['account.account'].browse(GASTOS_OPER)
         gastos_oper_a = self.env['account.financial.report'].search([('name','=','GASTOS DE OPERACIÓN')]).account_ids
-        out=self.calc_data(gastos_oper_a, context, choose_period, period_data, base)
-        gastos_oper=out['resultados']
-        t_gastos_oper=out['totales']
+        gastos_oper=self.calc_data(gastos_oper_a, context, choose_period, period_data)
+        #gastos_oper=out['resultados']
+        t_gastos_oper=self.total (gastos_oper, base)
 
         gastos_prod_fin_a= self.env['account.financial.report'].search([('name','=','GTOS Y PRODUCTOS FINANC.')]).account_ids
-        out=self.calc_data(gastos_prod_fin_a, context, choose_period, period_data, base)
-        gastos_prod_fin=out['resultados']
-        t_gastos_prod_fin=out['totales']
+        gastos_prod_fin=self.calc_data(gastos_prod_fin_a, context, choose_period, period_data)
+        #gastos_prod_fin=out['resultados']
+        t_gastos_prod_fin=self.total (gastos_prod_fin, base)
 
         #gastos_prod_a = self.env['account.account'].browse(GASTOS_PROD)
         gastos_prod_a = self.env['account.financial.report'].search([('name','=','OT. GASTOS Y PRODUCTOS')]).account_ids
-        out=self.calc_data(gastos_prod_a, context, choose_period,  period_data, base)
-        gastos_prod=out['resultados']
-        t_gastos_prod=out['totales']
+        gastos_prod=self.calc_data(gastos_prod_a, context, choose_period,  period_data)
+        if len (gastos_prod) > 1:
+            self.negative(gastos_prod[1])
+        t_gastos_prod=self.total (gastos_prod, base)
 
         #gastos_prod_2_a = self.env['account.account'].browse(GASTOS_PROD_2)
         gastos_prod_2_a = self.env['account.financial.report'].search([('name','=','OT. VARIOS')]).account_ids
-        out=self.calc_data(gastos_prod_2_a, context, choose_period, period_data, base)
-        gastos_prod_2=out['resultados']
-        t_gastos_prod_2=out['totales']
+        gastos_prod_2=self.calc_data(gastos_prod_2_a, context, choose_period, period_data)
+        if len (gastos_prod_2) > 1:
+            self.negative(gastos_prod_2[1])
+        t_gastos_prod_2=self.total (gastos_prod_2, base)
 
         imptos_a= self.env['account.financial.report'].search([('name','=','IMPTOS')]).account_ids
-        out=self.calc_data(imptos_a, context, choose_period, period_data, base)
-        imptos=out['resultados']
-        t_imptos=out['totales']
+        imptos=self.calc_data(imptos_a, context, choose_period, period_data)
+        #imptos=out['resultados']
+        t_imptos=self.total (imptos, base)
         
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
@@ -239,17 +235,14 @@ class ReportResultsEcosoft(models.AbstractModel):
             return m
 
 
-        utilidad_bruta = resta (t_ingresos, t_costos)       
-        #print str (t_ingresos)  + " - " + str(utilidad_bruta) + " - " + str (t_costos)
+        utilidad_bruta = resta (t_ingresos, t_costos)               
         utilidad_oper = resta (utilidad_bruta, t_gastos_oper) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
-        total_util_oper = utilidad_oper #reduce(resta, [utilidad_bruta, t_costos], {}) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))
-        #gtos_prod_fin = resta(utilidad_oper, total_util_oper)
+        total_util_oper = utilidad_oper #reduce(resta, [utilidad_bruta, t_costos], {}) #dict (Counter( utilidad_bruta) - Counter(t_gastos_oper))        
         aux = suma (total_util_oper, t_gastos_prod )
         utilidad_perd = suma (aux, t_gastos_prod_2) #dict (Counter( total_util_oper) + Counter(t_gastos_prod_2))
-        #total_isr_ptu = resta(utilidad_oper, total_util_oper)
+        
         util_neta = suma (utilidad_perd, t_imptos)
-        #print util_neta
-
+        
         docargs = {
             'doc_ids': self.ids,
             'doc_model': self.model,
@@ -273,10 +266,8 @@ class ReportResultsEcosoft(models.AbstractModel):
             't_imptos': t_imptos,
             'utilidad_bruta': utilidad_bruta,
             'utilidad_oper': utilidad_oper,
-            'total_util_oper': total_util_oper,
-            #'gtos_prod_fin': gtos_prod_fin,
-            'utilidad_perd': utilidad_perd, 
-            #'total_isr_ptu': total_isr_ptu, 
+            'total_util_oper': total_util_oper,    
+            'utilidad_perd': utilidad_perd,             
             'util_neta': util_neta 
         }
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)
