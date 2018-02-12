@@ -473,22 +473,22 @@
                             <strong>UTIL. (PÉRDIDA) ANTES DE IMPTOS.</strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="utilidad_perd['month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['month_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_perd['month_sales']"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="utilidad_perd['acum_month']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                            <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['balance_sales']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_perd['balance_sales']"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong><span t-att-style="style" t-esc="t_gastos_prod_2['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
+                            <strong><span t-att-style="style" t-esc="utilidad_perd['average']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong>
                           </td>
                           <td  class="text-right">
-                            <strong> % <span t-att-style="style" t-esc="t_gastos_prod_2['acum']"/></strong>
+                            <strong> % <span t-att-style="style" t-esc="utilidad_perd['acum']"/></strong>
                           </td>                         
                         </tr>
                     </tbody>
