@@ -128,7 +128,16 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
                     'name' : a.name                
                 }
                 results.append(result)
-        return results        
+        return results
+
+    def negative (self, result, name):
+        #print 'in negative'
+        for reg in result:
+            print  name + '---' +reg['name']
+            if name in reg['name']:
+                reg['balance'] = -(abs (reg['balance']))
+        #str (m)    
+        
 
     @api.model
     def render_html(self, wizard, data=None):
@@ -148,11 +157,13 @@ class ReportGeneralBalanceEcosoft(models.AbstractModel):
         #activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
         activo_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO CIRCULANTE')]).account_ids
         activo_circulante=self.calc_data(activo_circulante, choose_period, context)
+
         t_activo_circulante=self.calc_total(activo_circulante) 
                                
         #activo_no_circulante = self.env['account.account'].browse(ACTIVOS_NO_CIRCULANTE_IDS)
         activo_no_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO NO CIRCULANTE')]).account_ids
         activo_no_circulante=self.calc_data(activo_no_circulante, choose_period, context)
+        self.negative(activo_no_circulante, 'DEPN.')
         t_activo_no_circulante=self.calc_total(activo_no_circulante)
         
         #activo_diferido = self.env['account.account'].browse(ACTIVOS_DIFERIDO)

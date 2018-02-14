@@ -113,6 +113,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                 print ( "Con periodo" +  str (a.with_context(context).balance) + " ---" + str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
                     + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
                 result['name'] = a.name
+                result['code'] = a.code
                 result['acum_month'] = abs (a.with_context(context).argil_balance_all )
                 result['month'] = abs(a.with_context(context).balance) #a.with_context(context).credit - a.with_context(context).debit
                 result['month_sales'] = 0.0
@@ -128,6 +129,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                 print ("Sin periodo" + str (a.balance) + "-------" +  str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
                     + "---" +  str  (a.debit) + "---" +  str(a.credit))
                 result['name'] = a.name
+                result['code'] = a.code
                 result['acum_month'] =abs (a.argil_balance_all) 
                 result['month'] =  abs(a.balance) #a.credit - a.debit
                 result['month_sales'] = 0.0
@@ -151,9 +153,25 @@ class ReportResultsEcosoft(models.AbstractModel):
 
     def negative (self, m):
         for key in m:
-            if key != 'name':
+            if key not in ('name', 'code'):
                 m[key] = -(m[key])
-        str (m)    
+        #str (m)   
+
+     
+    def resta_elementos(self, results, code_a, code_b):
+        #print 'in resta elementos'
+        index_a, index_b,i=0,0,0
+        for reg in results:  
+            if reg['code'] == code_a:
+                index_a = i
+            elif reg['code'] == code_b:
+                index_b = i 
+            i+=1
+        
+        for key in results[index_a]:
+            if key not in  ('code', 'name'):
+                results[index_a][key] = abs (results[index_a][key]) - abs (results[index_b][key])
+
 
     @api.model
     def render_html(self, wizard, data=None):
@@ -190,6 +208,8 @@ class ReportResultsEcosoft(models.AbstractModel):
         #gastos_oper_a = self.env['account.account'].browse(GASTOS_OPER)
         gastos_oper_a = self.env['account.financial.report'].search([('name','=','GASTOS DE OPERACIÓN')]).account_ids
         gastos_oper=self.calc_data(gastos_oper_a, context, choose_period, period_data)
+        self.resta_elementos(gastos_oper, '6117-000-000-0000-000', '6117-006-000-0000-000')
+        self.resta_elementos(gastos_oper, '6125-000-000-0000-000', '6125-006-000-0000-000')
         #gastos_oper=out['resultados']
         t_gastos_oper=self.total (gastos_oper, base)
 
