@@ -203,6 +203,35 @@
                     </tbody>
                 </table>
 
+                <table style="width: 80%">     
+                  <tr>
+                        <td class="text-center">
+                          <h5> GERENTE GENERAL</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5> GERENTE ADMINISTRATIVO</h5>
+                        </td>
+                   </tr>
+                  
+                   <tr>     
+                        <td class="text-center">
+                          <h5> -----------------------------------------------------</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5> -----------------------------------------------------</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                          <h5>ING. VANESA LLANO RAMIREZ</h5>
+                        </td>
+                        <td class="text-center">
+                          <h5>C.P. FERNANDO BERNAL TORRES</h5>
+                        </td>
+                   </tr>
+                </table>
+
+
             </div>
         </t>
     </t>
