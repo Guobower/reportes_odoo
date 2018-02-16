@@ -4,6 +4,7 @@ import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
 import datetime
+import calendar
 
 
 class ReportTrialBalanceEcosoft(models.AbstractModel):
@@ -46,9 +47,14 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         periodo=""
         if choose_period :
             context.update({'periods': [period_data[0]]})
-            periodo=period_data[1]
+            print type (period_data[1])
+            fecha = period_data[1].split('/')
+            days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
+            last_day = days[1]  
+            periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
         else: 
-            periodo= datetime.date.today().strftime("%m/%Y")
+            periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
+        
         
         account = self.env['account.account'].search([('parent_id','=',False)])
         if len(account) != 1 and False:

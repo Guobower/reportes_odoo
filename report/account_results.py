@@ -4,6 +4,7 @@ import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
 import datetime
+import calendar
 
 """
 GASTOS_OPER
@@ -53,6 +54,9 @@ GASTOS_PROD_2=[87, 90]
 
 class ReportResultsEcosoft(models.AbstractModel):
     _name = 'report.account.report_results_ecosoft'
+
+    #def __init__(self): # contructor
+     #   print 'initialized resultados'
 
     def calc_total (self, lista):
         t=0
@@ -110,8 +114,8 @@ class ReportResultsEcosoft(models.AbstractModel):
             #print month
             for a in lista:
                 result={}
-                print ( "Con periodo" +  str (a.with_context(context).balance) + " ---" + str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
-                    + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
+                #print ( "Con periodo" + period_data[1] +  str (a.with_context(context).balance) + " ---" + str (a.with_context(context).argil_initial_balance)  + "---" + str (a.with_context(context).argil_balance_all) 
+                 #   + "---" +  str  (a.with_context(context).debit) + "---" +  str( a.with_context(context).credit) )
                 result['name'] = a.name
                 result['code'] = a.code
                 result['acum_month'] = abs (a.with_context(context).argil_balance_all )
@@ -126,8 +130,8 @@ class ReportResultsEcosoft(models.AbstractModel):
             #print month
             for a in lista:
                 result={}
-                print ("Sin periodo" + str (a.balance) + "-------" +  str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
-                    + "---" +  str  (a.debit) + "---" +  str(a.credit))
+                #print ("Sin periodo" + str (a.balance) + "-------" +  str (a.argil_initial_balance) + "---" +  str (a.argil_balance_all) 
+                 #   + "---" +  str  (a.debit) + "---" +  str(a.credit))
                 result['name'] = a.name
                 result['code'] = a.code
                 result['acum_month'] =abs (a.argil_balance_all) 
@@ -151,7 +155,7 @@ class ReportResultsEcosoft(models.AbstractModel):
             totales = self.calc_total(resultados)
         return totales    
 
-    def negative (self, m):
+    def substrac (self, m):
         for key in m:
             if key not in ('name', 'code'):
                 m[key] = -(m[key])
@@ -172,27 +176,18 @@ class ReportResultsEcosoft(models.AbstractModel):
             if key not in  ('code', 'name'):
                 results[index_a][key] = abs (results[index_a][key]) - abs (results[index_b][key])
 
+    @staticmethod
+    def calc_resultado (contexto, period_data, choose_period):
+        print 'hola resultados'
+        return get_data_report( context, period_data, choose_period)
 
-    @api.model
-    def render_html(self, wizard, data=None):
-
-        context = self._context.copy()
-        
-        period_data = data['form'].get('period_id', False)
-        choose_period = data['form'].get('choose_period', False)
-       
-        periodo=""
-        if choose_period :
-            context.update({'periods': [period_data[0]]})
-            periodo=period_data[1]
-        else: 
-            periodo= datetime.date.today().strftime("%m/%Y")
-
+    #@staticmethod
+    def get_data_report(self, context, period_data, choose_period, data,periodo):
         #ingresos_a = self.env['account.account'].browse(INGRESOS)
         ingresos_a = self.env['account.financial.report'].search([('name','=','INGRESOS')]).account_ids
         ingresos=self.calc_data(ingresos_a, context, choose_period, period_data)
         if len (ingresos) > 1:
-            self.negative(ingresos[1])
+            self.substrac(ingresos[1])
         t_ingresos= self.total (ingresos, {}) # out['totales']
         base = {}
         if ingresos:
@@ -222,14 +217,14 @@ class ReportResultsEcosoft(models.AbstractModel):
         gastos_prod_a = self.env['account.financial.report'].search([('name','=','OT. GASTOS Y PRODUCTOS')]).account_ids
         gastos_prod=self.calc_data(gastos_prod_a, context, choose_period,  period_data)
         if len (gastos_prod) > 1:
-            self.negative(gastos_prod[1])
+            self.substrac(gastos_prod[1])
         t_gastos_prod=self.total (gastos_prod, base)
 
         #gastos_prod_2_a = self.env['account.account'].browse(GASTOS_PROD_2)
         gastos_prod_2_a = self.env['account.financial.report'].search([('name','=','OT. VARIOS')]).account_ids
         gastos_prod_2=self.calc_data(gastos_prod_2_a, context, choose_period, period_data)
         if len (gastos_prod_2) > 1:
-            self.negative(gastos_prod_2[1])
+            self.substrac(gastos_prod_2[1])
         t_gastos_prod_2=self.total (gastos_prod_2, base)
 
         imptos_a= self.env['account.financial.report'].search([('name','=','IMPTOS')]).account_ids
@@ -290,4 +285,29 @@ class ReportResultsEcosoft(models.AbstractModel):
             'utilidad_perd': utilidad_perd,             
             'util_neta': util_neta 
         }
+
+        return docargs
+
+    @api.model
+    def render_html(self, wizard, data=None):
+
+        context = self._context.copy()
+        
+        period_data = data['form'].get('period_id', False)
+        choose_period = data['form'].get('choose_period', False)
+       
+        periodo=""
+        if choose_period :
+            context.update({'periods': [period_data[0]]})
+            print type (period_data[1])
+            fecha = period_data[1].split('/')
+            days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
+            last_day = days[1]  
+            periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
+        else: 
+            periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
+        
+
+        docargs = self.get_data_report(context, period_data, choose_period, data,periodo)
+        
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)
