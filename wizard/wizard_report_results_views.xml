@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_wizard_account_results" model="ir.ui.view">
-        <field name="name">Reporte de resultados</field>
+        <field name="name">Estado de resultados</field>
         <field name="model">wizard.results.ecosoft</field>
         <field name="arch" type="xml">
             <form string="Choose your Period">
@@ -9,7 +9,7 @@
                     Selecciona un Periodo
                 </p>
                 <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', True)]}">
-                    Reporte de resultados
+                    Estado de resultados
                 </p>
                 <group>
                     <field name="choose_period"/>
@@ -17,7 +17,7 @@
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Reporte Resultados" type="object" class="btn-primary"/>
+                    <button name="print_report" string="Estado de Resultados" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
@@ -25,7 +25,7 @@
     </record>
     
     <record id="action_account_results_menu" model="ir.actions.act_window">
-        <field name="name">Reporte de resultados</field>
+        <field name="name">Estado de resultados</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">wizard.results.ecosoft</field>
         <field name="view_type">form</field>

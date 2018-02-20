@@ -304,8 +304,10 @@ class ReportResultsEcosoft(models.AbstractModel):
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
             periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
+            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
         else: 
             periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
+            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
         
 
         docargs = self.get_data_report(context, period_data, choose_period, data,periodo)

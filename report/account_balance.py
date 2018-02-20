@@ -95,7 +95,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 res['argil_initial_balance'] = account.argil_initial_balance
                 res['debit'] = account.debit
                 res['credit'] = account.credit
-            res['balance'] = res['argil_initial_balance'] + res['debit'] - res['credit']
+            res['balance'] = abs (res['argil_initial_balance'] + res['debit'] - res['credit'])
             account_res.append(res)
         
         self.model = self.env.context.get('active_model')

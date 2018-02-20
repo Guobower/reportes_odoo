@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        
+        <record id="paperformat_ecosoft" model="report.paperformat">
+            <field name="name">Formato Reportes Ecosoft</field>
+            <field name="default" eval="True" />
+            <field name="format">A5</field> 
+            <field name="margin_top">4</field>
+            <field name="header_spacing">3</field>                                           
+        </record>
         <!-- QWeb Reports -->
+
+
         <report 
             id="action_report_trial_balance_ecosoft"
             model="account.balance.report"
@@ -11,6 +21,11 @@
             file="account.report_trialbalance_ecosoft"
             />
         
+
+        <record id="action_report_trial_balance_ecosoft" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_ecosoft" />
+        </record>
+
         <report 
             id="action_report_general_balance_ecosoft"
             model="account.balance.report"
@@ -20,14 +35,23 @@
             file="account.report_generalbalance_ecosoft"
             />
 
+        <record id="action_report_general_balance_ecosoft" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_ecosoft" />
+        </record>
+
+
         <report 
             id="action_report_results_ecosoft"
             model="account.balance.report"
             string="Reporte Resultados Ecosoft"
-            report_type="qweb-pdf"
+            report_type="qweb-pdf"            
             name="account.report_results_ecosoft"
             file="account.report_results_ecosoft"
             />
+
+        <record id="action_report_results_ecosoft" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_ecosoft" />
+        </record>
 
         <report 
             id="action_report_daily_ecosoft"
@@ -37,6 +61,10 @@
             name="account.report_daily_ecosoft"
             file="account.report_daily_ecosoft"
             />
+        <record id="action_report_daily_ecosoft" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_ecosoft" />
+        </record>
+
 
         <report 
             id="action_report_ledger_ecosoft"
@@ -46,5 +74,10 @@
             name="account.report_ledger_ecosoft"
             file="account.report_ledger_ecosoft"
             />
+
+        <record id="action_report_ledger_ecosoft" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_ecosoft" />
+        </record>
+        
     </data>
 </odoo>
