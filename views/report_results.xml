@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="report_results_ecosoft" pageSize="(842.0,595.0)">
+<template id="report_results_ecosoft">
     <t t-call="report.html_container">
         <t t-call="report.internal_layout">
             <div class="page">
@@ -18,7 +18,7 @@
                     </tr>
                     <tr style="text-align: center;">
                         <td colspan="2">
-                            <h4>Estado de Resultados al: <span t-esc="periodo_title"/> </h4>
+                            <h3>Estado de Resultados al: <span t-esc="periodo_title"/> </h3>
                         </td>
                         
                     </tr>                    

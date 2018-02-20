@@ -18,7 +18,7 @@
                     </tr>
                     <tr style="text-align: center;">
                         <td colspan="2">
-                            <h4>Balance General al: <span t-esc="periodo_title"/> </h4>
+                            <h3>Balance General al: <span t-esc="periodo_title"/> </h3>
                         </td>
                         
                     </tr>                    

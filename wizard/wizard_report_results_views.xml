@@ -17,7 +17,7 @@
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Estado de Resultados" type="object" class="btn-primary"/>
+                    <button name="print_report" string="Estado de resultados" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
@@ -35,7 +35,7 @@
     </record>
     
     <menuitem id="menu_results_report"
-        name="Reporte de resultados"
+        name="Estado de resultados"
         parent="menu_finance_legal_statement_ecosoft"
         action="action_account_results_menu"/>
 

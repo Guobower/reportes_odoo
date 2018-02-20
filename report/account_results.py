@@ -3,8 +3,9 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
-import datetime
+import datetime as dt
 import calendar
+from datetime import datetime
 
 """
 GASTOS_OPER
@@ -126,7 +127,7 @@ class ReportResultsEcosoft(models.AbstractModel):
                 #result['acum'] = a.with_context(context).balance
                 resultados.append(result)
         else:
-            month= datetime.date.today().month
+            month= dt.date.today().month
             #print month
             for a in lista:
                 result={}
@@ -182,7 +183,7 @@ class ReportResultsEcosoft(models.AbstractModel):
         return get_data_report( context, period_data, choose_period)
 
     #@staticmethod
-    def get_data_report(self, context, period_data, choose_period, data,periodo):
+    def get_data_report(self, context, period_data, choose_period, data,periodo, periodo_title=''):
         #ingresos_a = self.env['account.account'].browse(INGRESOS)
         ingresos_a = self.env['account.financial.report'].search([('name','=','INGRESOS')]).account_ids
         ingresos=self.calc_data(ingresos_a, context, choose_period, period_data)
@@ -283,7 +284,8 @@ class ReportResultsEcosoft(models.AbstractModel):
             'utilidad_oper': utilidad_oper,
             'total_util_oper': total_util_oper,    
             'utilidad_perd': utilidad_perd,             
-            'util_neta': util_neta 
+            'util_neta': util_neta,
+            'periodo_title': periodo_title 
         }
 
         return docargs
@@ -304,12 +306,12 @@ class ReportResultsEcosoft(models.AbstractModel):
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
             periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
-            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
+            periodo_title = datetime.strptime(str(last_day) + "/" +  period_data[1],'%d/%m/%Y').strftime('%d de %B del %Y')
         else: 
-            periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
-            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
+            periodo = "01/" + dt.date.today().strftime("%m/%Y") + " - "+ dt.date.today().strftime("%d/%m/%Y")
+            periodo_title = datetime.strptime(dt.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%d de %B del %Y')
         
 
-        docargs = self.get_data_report(context, period_data, choose_period, data,periodo)
+        docargs = self.get_data_report(context, period_data, choose_period, data, periodo, periodo_title)
         
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)

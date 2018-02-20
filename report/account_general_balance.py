@@ -3,10 +3,10 @@
 import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
-import datetime
+import datetime as dt
 from account_results import * 
 import calendar
-import datetime
+from datetime import datetime
 import locale
 
 """
@@ -151,7 +151,8 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         with_period = period_data and choose_period
         locale.setlocale(locale.LC_TIME, 'es_MX.UTF-8')
         
-        periodo=""
+        periodo=''
+        periodo_title=''
         if choose_period :
             context.update({'periods': [period_data[0]]})
             print type (period_data[1])
@@ -159,12 +160,12 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
             periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
-            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
+            periodo_title = datetime.strptime(str(last_day) + "/" +  period_data[1],'%d/%m/%Y').strftime('%d de %B del %Y')
 
             #str (last_day) + ' de '+ calendar.month_name[int (period_data[0])].title() + 'del '+ calendar.year []
         else:
-            periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
-            periodo_title = datetime.strptime(periodo,'%d/%m/%Y').strftime('%d de %B del %Y')
+            periodo = "01/" + dt.date.today().strftime("%m/%Y") + " - "+ dt.date.today().strftime("%d/%m/%Y")
+            periodo_title = datetime.strptime(dt.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%d de %B del %Y')
         
 
         #activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
@@ -224,6 +225,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
             'pasivo_corto_plazo': pasivo_corto_plazo,
             'capital': capital, 
             'totales': totales,
-            'periodo': periodo           
+            'periodo': periodo,
+            'periodo_title': periodo_title           
         }
         return self.env['report'].render('account_reports_ecosoft.report_generalbalance_ecosoft', docargs)
