@@ -6,8 +6,8 @@
             <field name="name">Formato Reportes Ecosoft</field>
             <field name="default" eval="True" />
             <field name="format">A5</field> 
-            <field name="margin_top">20</field>
-            <field name="header_spacing">4</field>                                           
+            <field name="margin_top">30</field>
+            <field name="header_spacing">20</field>                                           
         </record>
         <!-- QWeb Reports -->
 
