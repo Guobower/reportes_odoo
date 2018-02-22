@@ -15,29 +15,30 @@
                                     t-att-src="'data:image/png;base64,%s' % company.logo"
                                     style="max-height:90px;" />
                         </td>
-                    </tr>
-                    <tr style="text-align: center;">
+                   </tr>                                        
+                </table>
+                 <table style="width: 100%">     
+                  <tr>
+                        <td class="text-left">
+                          <h5>
+                               Dirección: Industria electrica No. 2 parque industrial secc. Venus, 
+                               
+                           </h5>
+                        </td>
+                        <td class="text-right">
+                          <h5> Reg. Frd.: IGU640324RD7</h5>
+                        </td>
+                   </tr>
+                   
+                   <tr style="text-align: center;">
                         <td colspan="2">
                             <h3>Diario General</h3>
                         </td>
                         
-                    </tr>                    
-                </table>
-                
-                  <table style="width: 100%">     
-                  <tr>
-                        <td class="text-left" colspan="2">
-                          <h5>
-                               Dirección: Industria electrica No. 2 parque industrial
-                               
-                           </h5>
-                        </td>
-                   </tr>
-                   <tr>     
-                         <td class="text-left">
-                          <h5> Reg. Frd.: IGU640324RD7</h5>
-                        </td>
-                        <td class="text-right">
+                    </tr>
+
+                   <tr>                              
+                        <td class="text-right" colspan="2">
                           <h5> Periodo: <span t-esc="periodo"/></h5>
                         </td>
                    </tr>

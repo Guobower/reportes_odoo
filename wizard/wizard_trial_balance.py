@@ -9,7 +9,7 @@ class WizardTrialBalance(models.TransientModel):
 
     choose_period = fields.Boolean('A un Periodo')
     period_id = fields.Many2one('account.period', 'Periodo', required=False)
-    level = fields.Selection([(1, '1.- Mayor'),(2, '2.- Sub-cta'),(3, '3.- Auxiliar')], string='Nivel',
+    level = fields.Selection([(1, '1.-Mayor'),(2, '2.- Cuenta'),(3, '3.- Sub-cta'),(4, '4.- Sub-cta-2'),(5, '5.- Auxiliar')], string='Nivel',
       required=True, copy=False, default=1,)
     display_account = fields.Selection([('all','All'), ('movement','With movements'), 
                                         ('not_zero','With balance is not equal to 0'),], 
@@ -22,3 +22,8 @@ class WizardTrialBalance(models.TransientModel):
         data.setdefault('form',{})
         data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])
         return self.env['report'].get_action(False, 'account.report_trialbalance_ecosoft', data=data)
+
+    #def print_report_xls(self, data):
+     #   data.setdefault('form',{})
+      #  data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])
+       # return self.env['report'].get_action(False, 'account.action_report_trial_balance_ecosoft_xls', data=data)

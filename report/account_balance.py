@@ -6,11 +6,13 @@ from odoo.exceptions import UserError
 import datetime
 import calendar
 
+AUX_LEVEL=5
+
 
 class ReportTrialBalanceEcosoft(models.AbstractModel):
     _name = 'report.account.report_trialbalance_ecosoft'
 
-    def _get_accounts(self, account, account_list=[], depth=0):
+    def _get_accounts(self, account, account_list=[], depth=0, level=5):
         """ compute the balance, debit and credit for the provided accounts
             :Arguments:
                 `accounts`: list of accounts record,
@@ -22,17 +24,19 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 `debit`: total amount of debit,
                 `balance`: total amount of balance,
         """
+        print depth
         if depth > 10:
             raise UserError(_("Depth 10 reach."))
         
         #print account.name +  str (account.id)
         childs = self.env['account.account'].search([('parent_id','=',account.id)], order="code asc")
-        if childs:
-            depth = depth + 1
-            for acc in childs:
-                account_list.append(acc.id)
-                self._get_accounts(acc, account_list, depth)
-        
+        if  depth  < level:
+            if childs:
+                depth = depth + 1
+                for acc in childs:
+                    account_list.append(acc.id)
+                    self._get_accounts(acc, account_list, depth, level)
+            
         return account_list
 
 
@@ -40,6 +44,10 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
     def render_html(self, wizard, data=None):
         context = self._context.copy()
         
+        level = data['form'].get('level')
+        if level == AUX_LEVEL:
+            level = 10
+        #print 'level:  ' + str (level) + ' -- ' + str(type(level))
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
@@ -62,7 +70,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         
         
         account_list = []
-        self._get_accounts(account[0], account_list)
+        self._get_accounts(account[0], account_list, 0, level)
         accounts = self.env['account.account'].browse(account_list)
         
 
@@ -95,7 +103,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 res['argil_initial_balance'] = account.argil_initial_balance
                 res['debit'] = account.debit
                 res['credit'] = account.credit
-            res['balance'] = abs (res['argil_initial_balance'] + res['debit'] - res['credit'])
+            res['balance'] = res['argil_initial_balance'] + res['debit'] - res['credit']
             account_res.append(res)
         
         self.model = self.env.context.get('active_model')

@@ -79,5 +79,16 @@
             <field name="paperformat_id" ref="paperformat_ecosoft" />
         </record>
         
+
+        <!-- XLS -->
+
+        <!--record id="action_report_trial_balance_ecosoft_xls" model="ir.actions.report.xml">
+          <field name="name">Reporte  XLSX</field>
+          <field name="model">account.balance.report</field>
+          <field name="type">ir.actions.report.xml</field>
+          <field name="report_name">account_financial_report_qweb.report_general_ledger_xlsx</field>
+          <field name="report_type">xlsx</field>
+          <field name="auto" eval="False"/>
+        </record-->
     </data>
 </odoo>

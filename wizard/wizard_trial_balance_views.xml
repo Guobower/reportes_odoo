@@ -14,10 +14,10 @@
                 <group>
                     <field name="choose_period"/>
                     <field name="period_id" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
-                    <field name="level" invisible="1"/>
+                    <field name="level"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Balanza" type="object" class="btn-primary"/>
+                    <button name="print_report" string="Balanza" type="object" class="btn-primary"/>                    
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>

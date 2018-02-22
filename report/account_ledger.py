@@ -5,13 +5,14 @@ from odoo import api, models, _
 from odoo.exceptions import UserError
 import datetime
 import calendar
+from datetime import datetime as dtime
 
 
 class ReportLedgerEcosoft(models.AbstractModel):
     _name = 'report.account.report_ledger_ecosoft'
 
   
-    def calc_data ( self, lista, choose_period, context, periodo):
+    def calc_data ( self, lista, choose_period, context, month):
         results=[]
         if choose_period:
             for a in lista:
@@ -19,7 +20,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
                     'balance' : a.with_context(context).balance,
                     'name' : a.name,
                     'code' : a.code,
-                    'period': periodo, #a.with_context(context).write_date,
+                    'period': month.title(), #a.with_context(context).write_date,
                     'acum' : a.with_context(context).argil_balance_all,
                     'init_balance': a.with_context(context).argil_initial_balance,
                     'credit' : a.with_context(context).credit,
@@ -33,7 +34,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
                     'balance' : a.balance,
                     'name' : a.name,
                     'code' : a.code,
-                    'period': periodo, #a.write_date,
+                    'period': month.title(), #a.write_date,
                     'acum': a.argil_balance_all,
                     'init_balance': a.argil_initial_balance,
                     'credit' : a.credit,
@@ -51,6 +52,7 @@ class ReportLedgerEcosoft(models.AbstractModel):
         with_period = period_data and choose_period
         
         periodo=""
+        month=""
         if choose_period :
             context.update({'periods': [period_data[0]]})
             print type (period_data[1])
@@ -58,15 +60,16 @@ class ReportLedgerEcosoft(models.AbstractModel):
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
             periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
+            month = dtime.strptime(str(last_day) + "/" +  period_data[1],'%d/%m/%Y').strftime('%B')
         else: 
             periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
-        
+            month = dtime.strptime(datetime.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%B')
         
         account = self.env['account.account'].search([('level','=',1)], order="code asc")
         if len(account) != 1 and False:
             raise UserError(_("No hay una cuenta padre unica."))
         
-        account_res = self.calc_data(account,choose_period, context, periodo)
+        account_res = self.calc_data(account,choose_period, context, month)
       
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
