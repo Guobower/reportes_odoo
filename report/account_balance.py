@@ -24,7 +24,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 `debit`: total amount of debit,
                 `balance`: total amount of balance,
         """
-        print depth
+        #print depth
         if depth > 10:
             raise UserError(_("Depth 10 reach."))
         
