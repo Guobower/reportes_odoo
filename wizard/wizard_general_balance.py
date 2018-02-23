@@ -17,9 +17,9 @@ class WizardGeneralBalance(models.TransientModel):
     target_move = fields.Selection([('posted', 'All Posted Entries'),
                                     ('all', 'All Entries'),
                                     ], string='Target Moves', required=True, default='all')
-    
+    only_balance = fields.Boolean('Con saldos')
     def print_report(self, data):
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])
+        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
         #records = self.env[data['model']].browse(data.get('ids', []))
         return self.env['report'].get_action(False, 'account.report_generalbalance_ecosoft', data=data)

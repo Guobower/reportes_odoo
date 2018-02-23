@@ -14,6 +14,7 @@
                 <group>
                     <field name="choose_period"/>
                     <field name="period_id" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
+                    <field name="only_balance"/>
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>

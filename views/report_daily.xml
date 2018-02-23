@@ -49,8 +49,8 @@
                         <tr style="border-bottom: 2px solid white;">
                             <th>Tipo</th>
                             <th>Número</th>
-                            <th class="text-right">Fecha</th>
-                            <th class="text-right" colspan="3">Concepto de la póliza</th>                            
+                            <th class="text-left">Fecha</th>
+                            <th class="text-left" colspan="3">Concepto de la póliza</th>                            
                         </tr>
                         <tr>
                             <th>No. de cuenta</th>
@@ -71,10 +71,10 @@
                             <td>
                                 <span t-att-style="style" t-esc="policy['num']"/>
                             </td>
-                             <td class="text-right">
+                             <td class="text-left">
                                 <span t-att-style="style" t-esc="policy['date']"/>
                             </td>
-                             <td colspan="3" class="text-right">
+                             <td colspan="3" class="text-left">
                                 <span t-att-style="style" t-esc="policy['concept']"/>
                             </td>
                         </tr>

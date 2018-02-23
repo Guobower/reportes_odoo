@@ -5,8 +5,10 @@ from odoo import api, models, _
 from odoo.exceptions import UserError
 import datetime
 import calendar
+import re
 
 AUX_LEVEL=5
+
 
 
 class ReportTrialBalanceEcosoft(models.AbstractModel):
@@ -48,6 +50,8 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         if level == AUX_LEVEL:
             level = 10
         #print 'level:  ' + str (level) + ' -- ' + str(type(level))
+        only_balance = data['form'].get('only_balance')
+        #print 'only_balance:  ' + str (only_balance) + ' -- ' + str(type(only_balance))
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
@@ -55,7 +59,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         periodo=""
         if choose_period :
             context.update({'periods': [period_data[0]]})
-            print type (period_data[1])
+            #print type (period_data[1])
             fecha = period_data[1].split('/')
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
@@ -103,9 +107,20 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 res['argil_initial_balance'] = account.argil_initial_balance
                 res['debit'] = account.debit
                 res['credit'] = account.credit
-            res['balance'] = res['argil_initial_balance'] + res['debit'] - res['credit']
+
+            if re.match('[2|3|4].', account.code):  # pasa a negativos las cuentas de pasivo
+                #print  'code ' + account.code   
+                res['balance'] = -(res['argil_initial_balance'] + res['debit'] - res['credit'])
+                res['argil_initial_balance'] = -(res['argil_initial_balance'])
+            else:
+                res['balance'] = res['argil_initial_balance'] + res['debit'] - res['credit']
+
             account_res.append(res)
         
+        if only_balance: 
+            account_res =filter ( lambda x : ( x['argil_initial_balance'] != 0 or  x['debit'] != 0 or x['credit'] != 0 or x['balance'] != 0 )  , account_res)   
+            
+        print 'account_res' + str (len (account_res)  )
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         

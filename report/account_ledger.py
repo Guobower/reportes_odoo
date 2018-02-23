@@ -50,12 +50,12 @@ class ReportLedgerEcosoft(models.AbstractModel):
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
-        
+        only_balance = data['form'].get('only_balance')
         periodo=""
         month=""
         if choose_period :
             context.update({'periods': [period_data[0]]})
-            print type (period_data[1])
+            #print type (period_data[1])
             fecha = period_data[1].split('/')
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
@@ -71,6 +71,9 @@ class ReportLedgerEcosoft(models.AbstractModel):
         
         account_res = self.calc_data(account,choose_period, context, month)
       
+        if only_balance: 
+            account_res =filter ( lambda x : ( x['acum'] != 0 or x['init_balance'] != 0 or x['credit'] != 0 or x['debit'] != 0 )  , account_res)
+
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         

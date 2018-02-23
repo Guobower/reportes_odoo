@@ -178,12 +178,11 @@ class ReportResultsEcosoft(models.AbstractModel):
                 results[index_a][key] = abs (results[index_a][key]) - abs (results[index_b][key])
 
     @staticmethod
-    def calc_resultado (contexto, period_data, choose_period):
-        print 'hola resultados'
+    def calc_resultado (contexto, period_data, choose_period):        
         return get_data_report( context, period_data, choose_period)
 
     #@staticmethod
-    def get_data_report(self, context, period_data, choose_period, data,periodo, periodo_title=''):
+    def get_data_report(self, context, period_data, choose_period, data,periodo, periodo_title='', only_balance=False):
         #ingresos_a = self.env['account.account'].browse(INGRESOS)
         ingresos_a = self.env['account.financial.report'].search([('name','=','INGRESOS')]).account_ids
         ingresos=self.calc_data(ingresos_a, context, choose_period, period_data)
@@ -259,6 +258,18 @@ class ReportResultsEcosoft(models.AbstractModel):
         
         util_neta = suma (utilidad_perd, t_imptos)
         
+        if only_balance:              
+            ingresos =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , ingresos)   
+            costos =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , costos)   
+            gastos_oper =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , gastos_oper)   
+            gastos_prod_fin =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , gastos_prod_fin)   
+            gastos_prod =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , gastos_prod)   
+            gastos_prod_2 =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , gastos_prod_2)   
+            imptos =filter ( lambda x : ( x['acum_month'] != 0 or  x['month'] != 0 or x['month_sales'] != 0 or x['balance_sales'] != 0 or x['average'] != 0 or x['acum'] != 0 )  , imptos)   
+
+
+
+        
         docargs = {
             'doc_ids': self.ids,
             'doc_model': self.model,
@@ -297,11 +308,11 @@ class ReportResultsEcosoft(models.AbstractModel):
         
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
-       
+        only_balance = data['form'].get('only_balance')
         periodo=""
         if choose_period :
             context.update({'periods': [period_data[0]]})
-            print type (period_data[1])
+            #print type (period_data[1])
             fecha = period_data[1].split('/')
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
@@ -312,6 +323,6 @@ class ReportResultsEcosoft(models.AbstractModel):
             periodo_title = datetime.strptime(dt.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%d de %B del %Y')
         
 
-        docargs = self.get_data_report(context, period_data, choose_period, data, periodo, periodo_title)
+        docargs = self.get_data_report(context, period_data, choose_period, data, periodo, periodo_title, only_balance)
         
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)

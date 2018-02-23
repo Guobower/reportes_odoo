@@ -147,6 +147,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
     def render_html(self, wizard, data=None):
         context = self._context.copy()
         period_data = data['form'].get('period_id', False)
+        only_balance = data['form'].get('only_balance')
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
         locale.setlocale(locale.LC_TIME, 'es_MX.UTF-8')
@@ -155,7 +156,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         periodo_title=''
         if choose_period :
             context.update({'periods': [period_data[0]]})
-            print type (period_data[1])
+            #print type (period_data[1])
             fecha = period_data[1].split('/')
             days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
             last_day = days[1]  
@@ -203,7 +204,13 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
-                
+        if only_balance: 
+            activo_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_circulante)
+            activo_no_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_no_circulante)
+            activo_diferido =filter ( lambda x : ( x['balance'] != 0 )  , activo_diferido)
+            pasivo_corto_plazo =filter ( lambda x : ( x['balance'] != 0 )  , pasivo_corto_plazo)
+            capital =filter ( lambda x : ( x['balance'] != 0 )  , capital)   
+               
         totales = {
             't_activo_circulante':t_activo_circulante, 
             't_activo_no_circulante':t_activo_no_circulante,
