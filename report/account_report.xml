@@ -56,7 +56,7 @@
         <report 
             id="action_report_daily_ecosoft"
             model="account.daily.report"
-            string="Libro diario Ecosoft"
+            string="Libro Diario Ecosoft"
             report_type="qweb-pdf"
             name="account.report_daily_ecosoft"
             file="account.report_daily_ecosoft"
@@ -69,7 +69,7 @@
         <report 
             id="action_report_ledger_ecosoft"
             model="account.ledger.report"
-            string="Libro mayor Ecosoft"
+            string="Libro mMayor Ecosoft"
             report_type="qweb-pdf"
             name="account.report_ledger_ecosoft"
             file="account.report_ledger_ecosoft"
@@ -80,6 +80,13 @@
         </record>
         
 
+        <!-- CSV -->
+
+        <record id="action_csv" model="ir.actions.client">
+            <field name="name">Reporte CSV</field> 
+            <field name="tag">action_csv</field>
+            <field name="context" eval="{'url': '/csv/print/', 'addActiveId': True, 'model': 'account.report'}" />
+        </record>
         <!-- XLS -->
 
         <!--record id="action_report_trial_balance_ecosoft_xls" model="ir.actions.report.xml">

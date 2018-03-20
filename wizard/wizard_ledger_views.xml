@@ -18,7 +18,8 @@
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Libro mayor" type="object" class="btn-primary"/>
+                    <button name="print_report" string="Libro Mayor" type="object" class="btn-primary"/>
+                    <button name="print_csv" string="Libro Mayor CSV" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>

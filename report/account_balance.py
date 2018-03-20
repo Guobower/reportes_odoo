@@ -14,6 +14,8 @@ AUX_LEVEL=5
 class ReportTrialBalanceEcosoft(models.AbstractModel):
     _name = 'report.account.report_trialbalance_ecosoft'
 
+    
+    
     def _get_accounts(self, account, account_list=[], depth=0, level=5):
         """ compute the balance, debit and credit for the provided accounts
             :Arguments:
@@ -42,8 +44,7 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         return account_list
 
 
-    @api.model
-    def render_html(self, wizard, data=None):
+    def get_data (self, data):
         context = self._context.copy()
         
         level = data['form'].get('level')
@@ -66,7 +67,6 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
             periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
         else: 
             periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
-        
         
         account = self.env['account.account'].search([('parent_id','=',False)])
         if len(account) != 1 and False:
@@ -120,18 +120,49 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
         if only_balance: 
             account_res =filter ( lambda x : ( x['argil_initial_balance'] != 0 or  x['debit'] != 0 or x['credit'] != 0 or x['balance'] != 0 )  , account_res)   
             
-        print 'account_res' + str (len (account_res)  )
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+        #print 'account_res' + str (len (account_res)  )
+        #self.model = self.env.context.get('active_model')
+        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'data': data['form'],
-            'docs': docs,
+            #'doc_ids': self.ids,
+            #'doc_model': self.model,
+            #'data': data['form'],
+            #'docs': docs,
             'time': time,
             'Accounts': account_res,
             'totales': totales,
             'periodo': periodo
         }
+
+        return docargs
+
+
+
+    @api.model
+    def render_html(self, wizard, data=None):       
+        docargs =  self.get_data (data)
         return self.env['report'].render('account_reports_ecosoft.report_trialbalance_ecosoft', docargs)
+
+    @api.model
+    def _get_csv(self, data=None):
+        print 'en trial balance'
+        print data         
+        docargs =  self.get_data (data)
+        headers = ['Cuenta contable','Nombre', 'Nivel', 'Saldo Ant.', 'Cargos', 'Abonos', 'Saldo Actual']
+        csv = '|'.join(headers)
+        csv += "\n"
+        accounts = docargs['Accounts']
+        
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row =  account['code'] + '|'+ account['name'] + '|' \
+                           + str(account['level']) +'|'+ str (account['argil_initial_balance']) \
+                           + '|'+ str(account['debit']) +'|'+ str(account['credit']) +'|'+ str(account['balance'])                
+                csv += csv_row  + "\n"                
+        csv +=  ' Totales |............ | |' + str (docargs['totales']['argil_initial_balance']) + '|' \
+                + str (docargs['totales']['debit']) + '|' + str(docargs['totales']['credit']) + '|' + str(docargs['totales']['balance']) + "\n"        
+        return csv
+
+        
+        

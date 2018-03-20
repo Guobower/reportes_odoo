@@ -49,11 +49,11 @@
                         <tr>
                             <th style="width: 35%"></th>
                             <th class="text-right">Este mes</th>                            
-                            <th class="text-right">% ventas</th>
+                            <th class="text-right">% Ventas</th>
                             <th class="text-right">Acum. este mes</th>
                             <th class="text-right">% Ventas</th>
                             <th class="text-right">Promedio</th>
-                            <th class="text-right">% Acum</th>
+                            <th class="text-right">% Acum.</th>
                         </tr>
                     </thead>
                  </table>   

@@ -18,8 +18,23 @@ class WizardGeneralBalance(models.TransientModel):
                                     ('all', 'All Entries'),
                                     ], string='Target Moves', required=True, default='all')
     only_balance = fields.Boolean('Con saldos')
+
+
+    @api.multi
+    def print_csv(self):
+        data = self.read(['choose_period','period_id','display_account','target_move', 'only_balance'])[0]
+        print type (data)
+        print data 
+        data = str (data).replace('/', '---')        
+        print data
+
+        return {
+            'type' : 'ir.actions.act_url',
+            'url': '/csv/general/%s/'%(data),            
+            'target': 'blank',
+        }
+
     def print_report(self, data):
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
-        #records = self.env[data['model']].browse(data.get('ids', []))
+        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])        
         return self.env['report'].get_action(False, 'account.report_generalbalance_ecosoft', data=data)

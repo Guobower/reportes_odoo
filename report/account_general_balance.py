@@ -142,9 +142,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
                 reg['balance'] = -(abs (reg['balance']))
         #str (m)    
         
-
-    @api.model
-    def render_html(self, wizard, data=None):
+    def get_data(self, data):
         context = self._context.copy()
         period_data = data['form'].get('period_id', False)
         only_balance = data['form'].get('only_balance')
@@ -202,8 +200,8 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         capital.append(result_ejer)               
         t_capital=self.calc_total_balance(capital)
         
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+        #self.model = self.env.context.get('active_model')
+        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         if only_balance: 
             activo_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_circulante)
             activo_no_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_no_circulante)
@@ -221,10 +219,10 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
             't_pasivo_capital': t_pasivo_corto_plazo + t_capital
             }
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'data': data['form'],
-            'docs': docs,
+            #'doc_ids': self.ids,
+            #'doc_model': self.model,
+            #'data': data['form'],
+            #'docs': docs,
             'time': time,
             'activo_circulante': activo_circulante,
             'activo_no_circulante': activo_no_circulante,
@@ -235,4 +233,62 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
             'periodo': periodo,
             'periodo_title': periodo_title           
         }
+
+        return docargs
+
+
+    @api.model
+    def render_html(self, wizard, data=None):
+        docargs = self.get_data (data)
         return self.env['report'].render('account_reports_ecosoft.report_generalbalance_ecosoft', docargs)
+
+    def get_map_account(self,docargs, name):
+        accounts = docargs[name]
+        csv = ''
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row =  '|' + account['name'] + '|'+ str (account['balance']) 
+                #print csv_row
+                csv += csv_row  + "\n" 
+        return csv               
+
+    def get_map_total(self,docargs, name):
+        accounts = docargs[name]
+        csv = ''
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row =  '|' + account['name'] + '|'+ str (account['balance']) 
+                #print csv_row
+                csv += csv_row  + "\n" 
+        return csv
+        
+    @api.model
+    def _get_csv(self, data=None):
+        print 'en general balance'
+        docargs =  self.get_data (data)
+        headers = ['', 'Nombre', 'Saldo']
+        csv = '|'.join(headers)
+        csv += "\n"
+        csv +='ACTIVO CIRCULANTE' + '|'  +  '|' + "\n" 
+        csv += self.get_map_account(docargs, 'activo_circulante')
+        csv += '|' + 'TOTAL DE ACTIVO CIRCULANTE' + '|'+ str (docargs['totales']['t_activo_circulante']) + "\n" 
+        csv +='ACTIVO NO CIRCULANTE' + '|'  +  '|' + "\n" 
+        csv += self.get_map_account(docargs, 'activo_no_circulante')
+        csv += '|' + 'TOTAL DE ACTIVO NO CIRCULANTE' + '|'+ str (docargs['totales']['t_activo_no_circulante']) + "\n" 
+        csv +='ACTIVO DIFERIDO' + '|'  +  '|' + "\n" 
+        csv += self.get_map_account(docargs, 'activo_diferido')
+        csv += '|' + 'TOTAL ACTIVO DIFERIDO' + '|'+ str (docargs['totales']['t_activo_diferido']) + "\n" 
+        csv += 'TOTAL DE ACTIVO' + '|' + '|'+ str (docargs['totales']['t_activo']) + "\n" 
+        csv +='PASIVO CORTO PLAZO' + '|'  +  '|' + "\n" 
+        csv += self.get_map_account(docargs, 'pasivo_corto_plazo')
+        csv += '|' + 'TOTAL DE PASIVO CORTO PLAZO' + '|'+ str (docargs['totales']['t_pasivo_corto_plazo']) + "\n" 
+        csv +='CAPITAL' + '|'  +  '|' + "\n" 
+        csv += self.get_map_account(docargs, 'capital')
+        csv += '|' + 'TOTAL DE CAPITAL' + '|'+ str (docargs['totales']['t_capital']) + "\n" 
+        csv += 'TOTALDE PASIVO Y CAPITAL' + '|' + '|'+ str (docargs['totales']['t_pasivo_capital']) + "\n" 
+
+        #csv +=  ' | Totales |  |' + str (docargs['totales']['argil_initial_balance']) + '|' \
+         #       + str (docargs['totales']['debit']) + '|' + str(docargs['totales']['credit']) + '|' + str(docargs['totales']['balance']) + "\n"        
+        return csv
+
+    

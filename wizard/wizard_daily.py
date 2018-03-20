@@ -18,6 +18,18 @@ class WizardDaily(models.TransientModel):
                                     ('all', 'All Entries'),
                                     ], string='Target Moves', required=True, default='all')
     only_balance = fields.Boolean('Con saldos')
+    
+    @api.multi
+    def print_csv(self):
+        data = self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0]        
+        data = str (data).replace('/', '---')                
+        return {
+            'type' : 'ir.actions.act_url',
+            'url': '/csv/daily/%s/'%(data),            
+            'target': 'blank',
+        }
+
+
     def print_report(self, data):
         data.setdefault('form',{})
         data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move','only_balance'])[0])        

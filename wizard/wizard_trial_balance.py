@@ -2,6 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, fields, _
+from odoo import http
+from odoo.http import request as req
+import csv
+import urllib
 
 
 class WizardTrialBalance(models.TransientModel):
@@ -18,6 +22,26 @@ class WizardTrialBalance(models.TransientModel):
                                     ('all', 'All Entries'),
                                     ], string='Target Moves', required=True, default='all')
     only_balance = fields.Boolean('Con saldos')
+    
+    
+   
+    @api.multi
+    def print_csv(self):
+        data = self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0]
+        print type (data)
+        print data 
+        data = str (data).replace('/', '---')
+        #data = urllib.urlencode(data)
+        print data
+
+        return {
+            'type' : 'ir.actions.act_url',
+            'url': '/csv/trial/%s/'%(data),            
+            'target': 'blank',
+        }
+
+    
+
     def print_report(self, data):
         data.setdefault('form',{})
         data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])

@@ -41,12 +41,10 @@ class ReportLedgerEcosoft(models.AbstractModel):
                     'debit' : a.debit                
                 }
                 results.append(result)
-        return results     
+        return results 
 
-    @api.model
-    def render_html(self, wizard, data=None):
-        context = self._context.copy()
-        
+    def get_data(self, data):
+        context = self._context.copy()        
         period_data = data['form'].get('period_id', False)
         choose_period = data['form'].get('choose_period', False)
         with_period = period_data and choose_period
@@ -74,16 +72,41 @@ class ReportLedgerEcosoft(models.AbstractModel):
         if only_balance: 
             account_res =filter ( lambda x : ( x['acum'] != 0 or x['init_balance'] != 0 or x['credit'] != 0 or x['debit'] != 0 )  , account_res)
 
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+        #self.model = self.env.context.get('active_model')
+        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'data': data['form'],
-            'docs': docs,
+            #'doc_ids': self.ids,
+            #'doc_model': self.model,
+            #'data': data['form'],
+            #'docs': docs,
             'time': time,
             'Accounts': account_res,            
             'periodo': periodo
         }
+
+        return docargs
+
+
+    @api.model
+    def render_html(self, wizard, data=None):
+        docargs = self.get_data(data)        
         return self.env['report'].render('account_reports_ecosoft.report_ledger_ecosoft', docargs)
+
+    @api.model
+    def _get_csv(self, data=None):        
+        docargs =  self.get_data (data)
+        headers = ['Cuenta' , 'Nombre', 'Saldo inicial', 'Acumulados', 'Periodo', 'Cargos', 'Abonos', 'Saldo', 'Cargos', 'Abonos']
+        csv = '|'.join(headers)
+        csv += "\n"
+        accounts = docargs['Accounts']        
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row =  account['code'] + '|'+ account['name'] + '|' + str(account['init_balance']) +'|'+ str (account['acum']) \
+                            + '|' + str(account['period']) + '|'+ str(account['credit']) +'|'+ str(account['debit']) \
+                            + '|' + str(account['balance']) + '|'+ str(account['credit']) +'|'+ str(account['debit']) \
+                                        
+                csv += csv_row  + "\n"                
+        
+        return csv
+

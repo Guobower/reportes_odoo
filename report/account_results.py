@@ -180,8 +180,7 @@ class ReportResultsEcosoft(models.AbstractModel):
     @staticmethod
     def calc_resultado (contexto, period_data, choose_period):        
         return get_data_report( context, period_data, choose_period)
-
-    #@staticmethod
+    
     def get_data_report(self, context, period_data, choose_period, data,periodo, periodo_title='', only_balance=False):
         #ingresos_a = self.env['account.account'].browse(INGRESOS)
         ingresos_a = self.env['account.financial.report'].search([('name','=','INGRESOS')]).account_ids
@@ -232,8 +231,8 @@ class ReportResultsEcosoft(models.AbstractModel):
         #imptos=out['resultados']
         t_imptos=self.total (imptos, base)
         
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+        #self.model = self.env.context.get('active_model')
+        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
 
         
@@ -271,10 +270,10 @@ class ReportResultsEcosoft(models.AbstractModel):
 
         
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'data': data['form'],
-            'docs': docs,
+            #'doc_ids': self.ids,
+            #'doc_model': self.model,
+            #'data': data['form'],
+            #'docs': docs,
             'time': time,
             'periodo':periodo,
             'ingresos': ingresos,
@@ -301,9 +300,7 @@ class ReportResultsEcosoft(models.AbstractModel):
 
         return docargs
 
-    @api.model
-    def render_html(self, wizard, data=None):
-
+    def get_data(self, data):
         context = self._context.copy()
         
         period_data = data['form'].get('period_id', False)
@@ -320,9 +317,73 @@ class ReportResultsEcosoft(models.AbstractModel):
             periodo_title = datetime.strptime(str(last_day) + "/" +  period_data[1],'%d/%m/%Y').strftime('%d de %B del %Y')
         else: 
             periodo = "01/" + dt.date.today().strftime("%m/%Y") + " - "+ dt.date.today().strftime("%d/%m/%Y")
-            periodo_title = datetime.strptime(dt.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%d de %B del %Y')
+            periodo_title = datetime.strptime(dt.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%d de %B del %Y')        
+        docargs = self.get_data_report(context, period_data, choose_period, data, periodo, periodo_title, only_balance)
+        return docargs
         
 
-        docargs = self.get_data_report(context, period_data, choose_period, data, periodo, periodo_title, only_balance)
-        
+
+    def get_map_account(self,docargs, name):
+        accounts = docargs[name]
+        csv = ''
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row = '|' + account['name'] + '|'+ str (account['month']) + '|'+ str (account['month_sales']) \
+                            + '|'+ str (account['acum_month']) + '|'+ str (account['balance_sales']) \
+                            + '|'+ str (account['average']) + '|'+ str (account['acum']) 
+                #print csv_row
+                csv += csv_row  + "\n" 
+        return csv               
+
+
+    def get_map_total(self,docargs, name):
+        account = docargs[name]
+        csv = ''
+        if account:            
+            csv_row =   '|' + str (account['month']) + '|'+ str (account['month_sales']) \
+                        + '|'+ str (account['acum_month']) + '|'+ str (account['balance_sales']) \
+                        + '|'+ str (account['average']) + '|'+ str (account['acum']) 
+            #print csv_row
+            csv += csv_row  + "\n" 
+        return csv
+    
+
+    @api.model
+    def render_html(self, wizard, data=None):
+        docargs=self.get_data(data)        
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)
+            
+
+    @api.model
+    def _get_csv(self, data=None):           
+        docargs =  self.get_data (data)
+        headers = ['', 'Nombre', 'Este mes', '% Ventas', 'Acum. este mes', '% Ventas', 'Promedio', '% Acum.']
+        csv = '|'.join(headers)
+        csv += "\n"        
+        csv += 'INGRESOS' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'ingresos')
+        csv += 'TOTAL DE INGRESOS' + '|'+ self.get_map_total (docargs , 't_ingresos') + "\n" 
+        csv += 'COSTOS' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'costos')
+        csv += 'TOTAL DE COSTOS' + '|'+ self.get_map_total (docargs, 't_costos') + "\n" 
+        csv += 'UTILIDAD BRUTA' + '|'+ self.get_map_total (docargs, 'utilidad_bruta') + "\n" 
+        csv += 'GASTOS DE OPERACIÓN' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'gastos_oper')
+        csv += 'TOTAL DE GTOS. DE OPERACIÓN' + '|'+ self.get_map_total (docargs, 't_gastos_oper') + "\n" 
+        csv += 'UTIL. DE OPER. INSTALACIONES' + '|'+ self.get_map_total (docargs, 'utilidad_oper') + "\n" 
+        csv += 'TOTAL UTIL. DE OPERACIÓN' + '|'+ self.get_map_total (docargs, 'total_util_oper') + "\n" 
+        csv += 'GTOS Y PRODUCTOS FINANC.' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'gastos_prod_fin')
+        csv += 'GTOS. Y PROD. FINAN.' + '|'+ self.get_map_total (docargs, 't_gastos_prod_fin') + "\n" 
+        csv += 'OT. GASTOS Y PRODUCTOS' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'gastos_prod')
+        csv += 'UTIL. (PÉRDIDA) VTA. ACT. FIJO' + '|'+ self.get_map_total (docargs, 't_gastos_prod') + "\n" 
+        csv += self.get_map_account(docargs, 'gastos_prod_2')
+        csv += 'OP. FIN. Y OT. GTOS. Y PROD.' + '|'+ self.get_map_total (docargs, 't_gastos_prod_2') + "\n" 
+        csv += 'UTIL. (PÉRDIDA) ANTES DE IMPTOS.' + '|'+ self.get_map_total (docargs, 'utilidad_perd') + "\n" 
+        csv += 'IMPTOS.' + '|' + '|' + '|' +'|' + '|' + '|' +  "\n" 
+        csv += self.get_map_account(docargs, 'imptos')
+        csv += 'TOTAL DE ISR Y PTU' + '|'+ self.get_map_total (docargs, 't_imptos') + "\n"         
+        csv += 'UTILIDAD NETA' + '|'+ self.get_map_total (docargs, 'util_neta' ) + "\n" 
+        return csv
+

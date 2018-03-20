@@ -19,6 +19,7 @@
                 </group>
                 <footer>
                     <button name="print_report" string="Balance General" type="object" class="btn-primary"/>
+                    <button name="print_csv" string="Balance General CSV" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>

@@ -54,9 +54,8 @@ class ReportDailyEcosoft(models.AbstractModel):
        
         return results 
 
-
-    @api.model
-    def render_html(self, wizard, data=None):
+    
+    def get_data (self, data):
         context = self._context.copy()
         
         period_data = data['form'].get('period_id', False)
@@ -82,16 +81,42 @@ class ReportDailyEcosoft(models.AbstractModel):
         
         account_res = self.calc_data(moves , choose_period, context,  only_balance)
 
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+        #self.model = self.env.context.get('active_model')
+        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
         docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'data': data['form'],
-            'docs': docs,
+            #'doc_ids': self.ids,
+            #'doc_model': self.model,
+            #'data': data['form'],
+            #'docs': docs,
             'time': time,
             'Accounts': account_res,            
             'periodo': periodo
         }
+        return docargs
+
+    @api.model
+    def render_html(self, wizard, data=None):
+        docargs = self.get_data(data)
         return self.env['report'].render('account_reports_ecosoft.report_daily_ecosoft', docargs)
+
+                      
+    @api.model
+    def _get_csv(self, data=None):        
+        docargs =  self.get_data (data)
+        headers = ['Tipo' , 'Número', 'Fecha', 'Concepto de la póliza', 'No. de cuenta', 'Depto'
+                    , 'Descripción de cuenta', 'Concepto del movimiento', 'Debe', 'Haber']
+        csv = '|'.join(headers)
+        csv += "\n"
+        accounts = docargs['Accounts']        
+        if len(accounts) > 0:
+            for account in accounts:                        
+                csv_row =  account['type'] + '|'+ str(account['num']) + '|' + str(account['date']) +'|'+ str (account['concept']) \
+                            + '|' + '|'+ '|' + '|' + '|'+ '|'
+                csv += csv_row  + "\n"                
+                for move in account['moves']:
+                    csv_row =  '|'+ '|'  +'|' + '|' + str(move['code']) + '|'+ str(move['depto']) +'|'+ str(move['desc']) \
+                                + '|' + str(move['concept']) + '|'+ str(move['credit']) +'|'+ str(move['debit']) 
+                    csv += csv_row  + "\n"                
+        return csv
+
