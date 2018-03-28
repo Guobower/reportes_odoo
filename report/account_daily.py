@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 import datetime
 import calendar
 from datetime import datetime as dt
+from utils_xlsx import UtilsXlsx
 
 
 class ReportDailyEcosoft(models.AbstractModel):
@@ -120,3 +121,26 @@ class ReportDailyEcosoft(models.AbstractModel):
                     csv += csv_row  + "\n"                
         return csv
 
+    @api.model
+    def _get_xls(self, data=None, workbook=None):
+           
+        docargs =  self.get_data (data)
+        worksheet = workbook.add_worksheet('Balance')
+        
+        worksheet.set_column('A:A', 15)
+        worksheet.set_column('B:B', 10)
+        worksheet.set_column('C:C', 15)
+        worksheet.set_column('D:D', 20)
+        worksheet.set_column('E:E', 30)
+        worksheet.set_column('F:F', 15)
+        worksheet.set_column('G:G', 35)
+        worksheet.set_column('H:H', 15)
+        worksheet.set_column('I:I', 15)
+        worksheet.set_column('J:J', 15)
+        
+        # Add a bold format to use to highlight cells.
+        bold = workbook.add_format({'bold': 1, })        
+        matrix =map(lambda x: x.split('|'), self._get_csv(data).split('\n'))
+        headers=[0,]        
+        UtilsXlsx.add_matrix(matrix, worksheet, headers, bold)       
+    

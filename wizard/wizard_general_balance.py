@@ -34,6 +34,15 @@ class WizardGeneralBalance(models.TransientModel):
             'target': 'blank',
         }
 
+    def print_xls(self, data):        
+        data.setdefault('form',{})
+        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'account.report_generalbalance_ecosoft.xlsx',
+                'datas': data
+                } 
+
+
     def print_report(self, data):
         data.setdefault('form',{})
         data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])        

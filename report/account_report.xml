@@ -20,7 +20,15 @@
             name="account.report_trialbalance_ecosoft"
             file="account.report_trialbalance_ecosoft"
             />
-        
+        <report
+            id="action_report_trial_balance_ecosoft_xlsx"
+            model="wizard.trial.balance.ecosoft"
+            string="Balanza Comprobación Ecosoft"
+            report_type="xlsx"
+            name="account.report_trialbalance_ecosoft.xlsx"
+            file="account.report_trialbalance_ecosoft.xlsx"
+            attachment_use="False"
+        />
 
         <record id="action_report_trial_balance_ecosoft" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="paperformat_ecosoft" />
@@ -28,12 +36,23 @@
 
         <report 
             id="action_report_general_balance_ecosoft"
-            model="account.balance.report"
+            model="account.general.report"
             string="Balance General Ecosoft"
             report_type="qweb-pdf"
             name="account.report_generalbalance_ecosoft"
             file="account.report_generalbalance_ecosoft"
             />
+
+         <report
+            id="action_report_general_balance_ecosoft_xlsx"
+            model="wizard.general.balance.ecosoft"
+            string="Balance General Ecosoft"
+            report_type="xlsx"
+            name="account.report_generalbalance_ecosoft.xlsx"
+            file="account.report_generalbalance_ecosoft.xlsx"
+            attachment_use="False"
+        />
+
 
         <record id="action_report_general_balance_ecosoft" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="paperformat_ecosoft" />
@@ -42,13 +61,22 @@
 
         <report 
             id="action_report_results_ecosoft"
-            model="account.balance.report"
+            model="account.results.report"
             string="Reporte Resultados Ecosoft"
             report_type="qweb-pdf"            
             name="account.report_results_ecosoft"
             file="account.report_results_ecosoft"
             />
 
+        <report
+            id="action_report_results_ecosoft_xlsx"
+            model="wizard.results.ecosoft"
+            string="Reporte Resultados Ecosoft"
+            report_type="xlsx"
+            name="account.report_results_ecosoft.xlsx"
+            file="account.report_results_ecosoft.xlsx"
+            attachment_use="False"
+        />
         <record id="action_report_results_ecosoft" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="paperformat_ecosoft" />
         </record>
@@ -61,6 +89,18 @@
             name="account.report_daily_ecosoft"
             file="account.report_daily_ecosoft"
             />
+
+
+        <report
+            id="action_report_daily_ecosoft_xlsx"
+            model="wizard.daily.ecosoft"
+            string="Libro Diario Ecosoft"
+            report_type="xlsx"
+            name="account.report_daily_ecosoft.xlsx"
+            file="account.report_daily_ecosoft.xlsx"
+            attachment_use="False"
+        />
+
         <record id="action_report_daily_ecosoft" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="paperformat_ecosoft" />
         </record>
@@ -69,11 +109,21 @@
         <report 
             id="action_report_ledger_ecosoft"
             model="account.ledger.report"
-            string="Libro mMayor Ecosoft"
+            string="Libro Mayor Ecosoft"
             report_type="qweb-pdf"
             name="account.report_ledger_ecosoft"
             file="account.report_ledger_ecosoft"
             />
+
+        <report
+            id="action_report_ledger_ecosoft_xlsx"
+            model="wizard.ledger.ecosoft"
+            string="Libro Mayor Ecosoft"
+            report_type="xlsx"
+            name="account.report_ledger_ecosoft.xlsx"
+            file="account.report_ledger_ecosoft.xlsx"
+            attachment_use="False"
+        />
 
         <record id="action_report_ledger_ecosoft" model="ir.actions.report.xml">
             <field name="paperformat_id" ref="paperformat_ecosoft" />

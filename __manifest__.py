@@ -10,7 +10,7 @@
 Reportes de Ecosoft
     """,
     'website': 'www.ecosoft.com.mx',
-    'depends': ['account','account_period_and_fiscalyear','l10n_mx_account_tree'],
+    'depends': ['account','account_period_and_fiscalyear','l10n_mx_account_tree', 'report_xlsx'],
     'category': 'Hidden',
     'sequence': 20,
     'data': [

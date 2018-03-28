@@ -22,6 +22,21 @@ class CsvController(http.Controller):
                                         [('Content-Type', 'application/octet-stream'),
                                          ('Content-Disposition', 'attachment; filename="%s"'%(filename))])
 
+    @http.route('/xls/trial/<string:data>', auth='user')
+    def xls_trial_balance(self, data, **kw):        
+        print 'in route' + data
+        data = str (data).replace('---', '/')
+        form=dict()
+        form['form'] = ast.literal_eval(data)        
+        if data:            
+            xls = http.request.env['report.account.report_trialbalance_ecosoft']._get_xls(form)                    
+        filename = 'Balanza Comprobación Ecosoft.xls'
+        print xls
+        return request.make_response(xls,
+                                        [('Content-Type', 'application/octet-stream'),
+                                         ('Content-Disposition', 'attachment; filename="%s"'%(filename))])
+
+
     @http.route('/csv/general/<string:data>', auth='user')
     def csv_general_balance(self, data, **kw):        
         print 'in route balance general' + data

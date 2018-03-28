@@ -8,6 +8,7 @@ from account_results import *
 import calendar
 from datetime import datetime
 import locale
+from utils_xlsx import UtilsXlsx
 
 """
 ACTIVOS_CIRCULANTE_IDS
@@ -252,16 +253,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
                 csv += csv_row  + "\n" 
         return csv               
 
-    def get_map_total(self,docargs, name):
-        accounts = docargs[name]
-        csv = ''
-        if len(accounts) > 0:
-            for account in accounts:                        
-                csv_row =  '|' + account['name'] + '|'+ str (account['balance']) 
-                #print csv_row
-                csv += csv_row  + "\n" 
-        return csv
-        
+       
     @api.model
     def _get_csv(self, data=None):
         print 'en general balance'
@@ -285,10 +277,28 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         csv +='CAPITAL' + '|'  +  '|' + "\n" 
         csv += self.get_map_account(docargs, 'capital')
         csv += '|' + 'TOTAL DE CAPITAL' + '|'+ str (docargs['totales']['t_capital']) + "\n" 
-        csv += 'TOTALDE PASIVO Y CAPITAL' + '|' + '|'+ str (docargs['totales']['t_pasivo_capital']) + "\n" 
-
-        #csv +=  ' | Totales |  |' + str (docargs['totales']['argil_initial_balance']) + '|' \
-         #       + str (docargs['totales']['debit']) + '|' + str(docargs['totales']['credit']) + '|' + str(docargs['totales']['balance']) + "\n"        
+        csv += 'TOTALDE PASIVO Y CAPITAL' + '|' + '|'+ str (docargs['totales']['t_pasivo_capital']) + "\n"         
         return csv
 
-    
+                
+    @api.model
+    def _get_xls(self, data=None, workbook=None):
+             
+        docargs =  self.get_data (data)
+        worksheet = workbook.add_worksheet('Balance')
+        
+        worksheet.set_column('A:A', 30)
+        worksheet.set_column('B:B', 35)
+        worksheet.set_column('C:C', 15)
+        # Add a bold format to use to highlight cells.
+        bold = workbook.add_format({'bold': 1, })
+        matrix =map(lambda x: x.split('|'), self._get_csv(data).split('\n'))
+        headers=[0,]
+        i=0
+        for r in matrix:
+            if r[0]!='':
+                headers.append(i)
+            i+=1   
+        UtilsXlsx.add_matrix(matrix, worksheet, headers, bold)  
+
+        

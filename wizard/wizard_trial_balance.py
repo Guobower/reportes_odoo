@@ -31,23 +31,24 @@ class WizardTrialBalance(models.TransientModel):
         print type (data)
         print data 
         data = str (data).replace('/', '---')
-        #data = urllib.urlencode(data)
         print data
 
         return {
             'type' : 'ir.actions.act_url',
             'url': '/csv/trial/%s/'%(data),            
-            'target': 'blank',
+            'target': 'self',
         }
 
     
+    def print_xls(self, data):        
+        data.setdefault('form',{})
+        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'account.report_trialbalance_ecosoft.xlsx',
+                'datas': data
+                }        
 
     def print_report(self, data):
         data.setdefault('form',{})
         data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
         return self.env['report'].get_action(False, 'account.report_trialbalance_ecosoft', data=data)
-
-    #def print_report_xls(self, data):
-     #   data.setdefault('form',{})
-      #  data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move'])[0])
-       # return self.env['report'].get_action(False, 'account.action_report_trial_balance_ecosoft_xls', data=data)

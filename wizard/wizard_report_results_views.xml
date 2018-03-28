@@ -18,8 +18,8 @@
                     <field name="level" invisible="1"/>
                 </group>
                 <footer>
-                    <button name="print_report" string="Estado de Resultados" type="object" class="btn-primary"/>
-                    <button name="print_csv" string="Estado de Resultados CSV" type="object" class="btn-primary"/>
+                    <button name="print_report" string="PDF" type="object" class="btn-primary"/>
+                    <button name="print_csv" string="CSV" type="object" class="btn-primary"/>    <button name="print_xls" string="XLS" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>

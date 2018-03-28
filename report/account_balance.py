@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 import datetime
 import calendar
 import re
+from utils_xlsx import UtilsXlsx
 
 AUX_LEVEL=5
 
@@ -164,5 +165,26 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                 + str (docargs['totales']['debit']) + '|' + str(docargs['totales']['credit']) + '|' + str(docargs['totales']['balance']) + "\n"        
         return csv
 
+
+    @api.model
+    def _get_xls(self, data=None, workbook=None):
+         
+        docargs =  self.get_data (data)
+        worksheet = workbook.add_worksheet('Balance')
+        
+        worksheet.set_column('A:A', 30)
+        worksheet.set_column('B:B', 35)
+        worksheet.set_column('C:C', 15)
+        worksheet.set_column('D:D', 15)
+        worksheet.set_column('E:E', 15)
+        worksheet.set_column('F:F', 15)
+        worksheet.set_column('G:G', 15)        
+        # Add a bold format to use to highlight cells.
+        bold = workbook.add_format({'bold': 1, })        
+        matrix =map(lambda x: x.split('|'), self._get_csv(data).split('\n'))
+        headers=[0,(len(matrix)-2)]                
+        UtilsXlsx.add_matrix(matrix, worksheet, headers, bold)  
+        
+                
         
         
