@@ -5,7 +5,8 @@
         <record id="paperformat_ecosoft" model="report.paperformat">
             <field name="name">Formato Reportes Ecosoft</field>
             <field name="default" eval="True" />
-            <field name="format">A5</field> 
+            <field name="format">A4</field> 
+            <field name="orientation">Portrait</field>
             <field name="margin_top">30</field>
             <field name="header_spacing">20</field>                                           
         </record>
@@ -129,23 +130,5 @@
             <field name="paperformat_id" ref="paperformat_ecosoft" />
         </record>
         
-
-        <!-- CSV -->
-
-        <record id="action_csv" model="ir.actions.client">
-            <field name="name">Reporte CSV</field> 
-            <field name="tag">action_csv</field>
-            <field name="context" eval="{'url': '/csv/print/', 'addActiveId': True, 'model': 'account.report'}" />
-        </record>
-        <!-- XLS -->
-
-        <!--record id="action_report_trial_balance_ecosoft_xls" model="ir.actions.report.xml">
-          <field name="name">Reporte  XLSX</field>
-          <field name="model">account.balance.report</field>
-          <field name="type">ir.actions.report.xml</field>
-          <field name="report_name">account_financial_report_qweb.report_general_ledger_xlsx</field>
-          <field name="report_type">xlsx</field>
-          <field name="auto" eval="False"/>
-        </record-->
     </data>
 </odoo>
