@@ -13,21 +13,21 @@ class UtilsXlsx():
     def add_row(reg, worksheet, row):                
         col=0
         for r in reg:
-            if type (r)==int:                
-                    worksheet.write_number(row, col, r)
-            else:
-                worksheet.write_string(row, col, r)                             
+            try:
+                f = float(r)                            
+                worksheet.write_number(row, col, f)
+                    
+            except ValueError:
+                worksheet.write_string(row, col, r)                   
             col+=1
     
     @staticmethod
     def add_matrix( rows, worksheet, row_headers, bold):                
         row = 0        
         for r in rows:             
-            if row in row_headers:
-                #print '0'
+            if row in row_headers:                
                 UtilsXlsx.add_header(r, worksheet, bold, row)
-            else:
-                #print '1'
+            else:                
                 UtilsXlsx.add_row(r, worksheet, row)                
             row+=1
     
