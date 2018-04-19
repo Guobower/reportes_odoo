@@ -114,7 +114,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         t=0
         for a in lista:
             t= t+a['balance']
-        return t
+        return round (t,2)
 
     def calc_data_balance (self, lista, choose_period, context):
         results=[]

@@ -41,8 +41,7 @@ class CsvController(http.Controller):
         form['form'] = ast.literal_eval(data)        
         if data:            
             csv = http.request.env['report.account.report_results_ecosoft']._get_csv(form)                    
-        filename = 'Reporte Resultados Ecosoft.csv'
-        print csv
+        filename = 'Reporte Resultados Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),
                                          ('Content-Disposition', 'attachment; filename="%s"'%(filename))])    

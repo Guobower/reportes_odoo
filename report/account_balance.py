@@ -161,8 +161,8 @@ class ReportTrialBalanceEcosoft(models.AbstractModel):
                            + str(account['level']) +'|'+ str (account['argil_initial_balance']) \
                            + '|'+ str(account['debit']) +'|'+ str(account['credit']) +'|'+ str(account['balance'])                
                 csv += csv_row  + "\n"                
-        csv +=  ' Totales |............ | |' + str (docargs['totales']['argil_initial_balance']) + '|' \
-                + str (docargs['totales']['debit']) + '|' + str(docargs['totales']['credit']) + '|' + str(docargs['totales']['balance']) + "\n"        
+        csv +=  ' Totales |............ | |' + str (round (docargs['totales']['argil_initial_balance'],2)) + '|' \
+                + str (round (docargs['totales']['debit'],2)) + '|' + str(round(docargs['totales']['credit'],2)) + '|' + str(round(docargs['totales']['balance'],2)) + "\n"        
         return csv
 
 

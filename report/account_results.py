@@ -64,11 +64,11 @@ class ReportResultsEcosoft(models.AbstractModel):
         t=0
         if lista:
             total= {
-                'month': reduce(lambda x, y : x + y , [ c ['month'] for c in lista ]), 
-                'month_sales': reduce(lambda x, y : x + y , [ c ['month_sales'] for c in lista ]),  
-                'acum_month': reduce(lambda x, y : x + y , [ c ['acum_month'] for c in lista ]), 
-                'balance_sales': reduce(lambda x, y : x + y , [ c ['balance_sales'] for c in lista ]), 
-                'average': reduce(lambda x, y : x + y , [ c ['average'] for c in lista ]), 
+                'month': round (reduce(lambda x, y : x + y , [ c ['month'] for c in lista ]),2), 
+                'month_sales': round ( reduce(lambda x, y : x + y , [ c ['month_sales'] for c in lista ]), 2),  
+                'acum_month': round (reduce(lambda x, y : x + y , [ c ['acum_month'] for c in lista ]),2), 
+                'balance_sales': round (reduce(lambda x, y : x + y , [ c ['balance_sales'] for c in lista ]),2), 
+                'average': round (reduce(lambda x, y : x + y , [ c ['average'] for c in lista ]),2), 
                 #'acum': reduce(lambda x, y : x + y , [ c ['acum'] for c in lista ]) 
             }
             total['acum'] = total['balance_sales']

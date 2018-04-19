@@ -5,8 +5,14 @@ class UtilsXlsx():
     @staticmethod
     def add_header(header, worksheet, bold, row):
         col=0                
-        for h in header:                 
-            worksheet.write_string (row, col, h, bold)
+        for h in header:   
+            try:
+                f = float(h) 
+                round(f,2)                           
+                worksheet.write_number(row, col, f, bold)
+                    
+            except ValueError:
+                worksheet.write_string(row, col, h, bold)               
             col+=1
     
     @staticmethod
