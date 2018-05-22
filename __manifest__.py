@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Reportes de contabilidad Ecosoft',
+    'name': 'Reportes de contabilidad Ecosoft v11',
     'version': '0.1',
     'summary': 'Reporte balanza de comprobación, Belanace general, Estado de resultados, Libro diario y Libro mayor',
     'author': 'Abraham Martínez y Antonio Silva ',
@@ -10,7 +10,7 @@
 Reportes de Ecosoft
     """,
     'website': 'www.ecosoft.com.mx',
-    'depends': ['account','account_period_and_fiscalyear','l10n_mx_account_tree', 'report_xlsx'],
+    'depends': ['base','account','account_reports','report_xlsx'],
     'category': 'Hidden',
     'sequence': 20,
     'data': [

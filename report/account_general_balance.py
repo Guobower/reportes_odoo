@@ -4,11 +4,12 @@ import time
 from odoo import api, models, _
 from odoo.exceptions import UserError
 import datetime as dt
-from account_results import * 
+from .account_results import * 
 import calendar
 from datetime import datetime
 import locale
-from utils_xlsx import UtilsXlsx
+from .utils_xlsx import UtilsXlsx
+import functools
 
 """
 ACTIVOS_CIRCULANTE_IDS
@@ -108,7 +109,7 @@ CAPITAL=[45, 46, 48, 49]
 """
 
 class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
-    _name = 'report.account.report_generalbalance_ecosoft'
+    _name = 'report.account_reports_ecosoft.report_generalbalance_ecosoft'
 
     def calc_total_balance (self, lista):
         t=0
@@ -169,7 +170,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         
 
         #activo_circulante = self.env['account.account'].browse(ACTIVOS_CIRCULANTE_IDS)
-        activo_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO CIRCULANTE')]).account_ids
+        activo_circulante = self.env['account.financial.report'].search([('name','=','ACTIVO CIRCULANTE')]).account_ids        
         activo_circulante=self.calc_data_balance(activo_circulante, choose_period, context)
 
         t_activo_circulante=self.calc_total_balance(activo_circulante) 
@@ -200,9 +201,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
               }
         capital.append(result_ejer)               
         t_capital=self.calc_total_balance(capital)
-        
-        #self.model = self.env.context.get('active_model')
-        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
+       
         if only_balance: 
             activo_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_circulante)
             activo_no_circulante =filter ( lambda x : ( x['balance'] != 0 )  , activo_no_circulante)
@@ -220,10 +219,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
             't_pasivo_capital': t_pasivo_corto_plazo + t_capital
             }
         docargs = {
-            #'doc_ids': self.ids,
-            #'doc_model': self.model,
-            #'data': data['form'],
-            #'docs': docs,
+           
             'time': time,
             'activo_circulante': activo_circulante,
             'activo_no_circulante': activo_no_circulante,
@@ -243,6 +239,12 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
         docargs = self.get_data (data)
         return self.env['report'].render('account_reports_ecosoft.report_generalbalance_ecosoft', docargs)
 
+    @api.model
+    def get_report_values (self, docids, data): 
+        print ('get values')       
+        docargs =  self.get_data (data)        
+        return docargs
+
     def get_map_account(self,docargs, name):
         accounts = docargs[name]
         csv = ''
@@ -256,7 +258,7 @@ class ReportGeneralBalanceEcosoft(ReportResultsEcosoft):
        
     @api.model
     def _get_csv(self, data=None):
-        print 'en general balance'
+        #print 'en general balance'
         docargs =  self.get_data (data)
         headers = ['', 'Nombre', 'Saldo']
         csv = '|'.join(headers)

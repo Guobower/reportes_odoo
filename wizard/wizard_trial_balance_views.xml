@@ -11,15 +11,16 @@
                 <p class="oe_gray" attrs="{'invisible': [('choose_period', '=', True)]}">
                     Balanza de Comprobación
                 </p>
-                <group>
-                    <field name="choose_period"/>
-                    <field name="period_id" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
+                <group>                    
+                    <field name="choose_period"/>                    
+                    <field name="date_from" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
+                    <field name="date_to" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)],}"/>
                     <field name="only_balance"/>
                     <field name="level"/>                    
                 </group>
                 <footer>
                     <button name="print_report" string="PDF" type="object" class="btn-primary"/>
-                    <button name="print_csv" string="CSV" type="object" class="btn-primary"/>    <button name="print_xls" string="XLS" type="object" class="btn-primary"/>                    
+                    <button name="print_csv" string="CSV" type="object" class="btn-primary"/>                        
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
@@ -36,19 +37,11 @@
         <field name="target">new</field>
     </record>
   
-  <menuitem id="menu_finance_legal_statement_ecosoft" name="Reportes Ecosoft - Igusa" parent="account.menu_finance_reports" sequence="10"/>
+  <menuitem id="menu_finance_legal_statement_ecosoft" name="Reportes Ecosoft" parent="account.menu_finance_reports" sequence="10"/>
   
     <menuitem id="menu_trial_Balance_report"
         name="Balanza de Comprobación"
         parent="menu_finance_legal_statement_ecosoft"
         action="action_account_balance_menu"/>
 
-    <record id="action_account_balance_report_values1" model="ir.values">
-        <field name="model_id" ref="account.model_account_account" />
-        <field name="name">Balanza de Comprobación</field>
-        <field name="key2">client_print_multi</field>
-        <field name="value" eval="'ir.actions.act_window,' +str(ref('action_account_balance_menu'))" />
-        <field name="key">action</field>
-        <field name="model">account.account</field>
-    </record>
 </odoo>

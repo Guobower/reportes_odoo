@@ -12,14 +12,14 @@
                     Libro mayor
                 </p>
                 <group>
-                    <field name="choose_period"/>
-                    <field name="period_id" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
-                    <field name="only_balance"/>
-                    <field name="level" invisible="1"/>
+                    <field name="choose_period"/>                    
+                    <field name="date_from" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)]}"/>
+                    <field name="date_to" attrs="{'invisible': [('choose_period', '=', False)], 'required': [('choose_period', '=', True)],}"/>
+                    <field name="only_balance"/>                    
                 </group>
                 <footer>
                     <button name="print_report" string="PDF" type="object" class="btn-primary"/>
-                    <button name="print_csv" string="CSV" type="object" class="btn-primary"/>    <button name="print_xls" string="XLS" type="object" class="btn-primary"/>
+                    <button name="print_csv" string="CSV" type="object" class="btn-primary"/>   
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>

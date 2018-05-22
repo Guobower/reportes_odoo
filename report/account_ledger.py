@@ -6,11 +6,12 @@ from odoo.exceptions import UserError
 import datetime
 import calendar
 from datetime import datetime as dtime
-from utils_xlsx import UtilsXlsx
+from .utils_xlsx import UtilsXlsx
+import functools 
+from .account_ecosoft import ReportAccountsEcosoft
 
-
-class ReportLedgerEcosoft(models.AbstractModel):
-    _name = 'report.account.report_ledger_ecosoft'
+class ReportLedgerEcosoft(ReportAccountsEcosoft):
+    _name = 'report.account_reports_ecosoft.report_ledger_ecosoft'
 
   
     def calc_data ( self, lista, choose_period, context, month):
@@ -46,46 +47,25 @@ class ReportLedgerEcosoft(models.AbstractModel):
 
     def get_data(self, data):
         context = self._context.copy()        
-        period_data = data['form'].get('period_id', False)
-        choose_period = data['form'].get('choose_period', False)
-        with_period = period_data and choose_period
-        only_balance = data['form'].get('only_balance')
+        level = data['form'].get('level')
+        if level == AUX_LEVEL:
+                level = 10        
+        only_balance = data['form'].get('only_balance')                
         periodo=""
-        month=""
-        if choose_period :
-            context.update({'periods': [period_data[0]]})
-            #print type (period_data[1])
-            fecha = period_data[1].split('/')
-            days = calendar.monthrange(int (fecha[1]), int (fecha[0]))
-            last_day = days[1]  
-            periodo="01/" + period_data[1] + " - "+ str(last_day) + "/" +  period_data[1]
-            month = dtime.strptime(str(last_day) + "/" +  period_data[1],'%d/%m/%Y').strftime('%B')
+        if choose_period :                
+                periodo= data['form'].get('date_from') + ' - ' + data['form'].get('date_to')
         else: 
-            periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
-            month = dtime.strptime(datetime.date.today().strftime("%d/%m/%Y"),'%d/%m/%Y').strftime('%B')
-        
-        account = self.env['account.account'].search([('level','=',1)], order="code asc")
-        if len(account) != 1 and False:
-            raise UserError(_("No hay una cuenta padre unica."))
-        
-        account_res = self.calc_data(account,choose_period, context, month)
-      
+                periodo = "01/" + datetime.date.today().strftime("%m/%Y") + " - "+ datetime.date.today().strftime("%d/%m/%Y")
+                
+        account_res = self.get_accounts(data['form'])              
         if only_balance: 
-            account_res =filter ( lambda x : ( x['acum'] != 0 or x['init_balance'] != 0 or x['credit'] != 0 or x['debit'] != 0 )  , account_res)
-
-        #self.model = self.env.context.get('active_model')
-        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
-        
+            account_res =filter ( lambda x : ( x['acum'] != 0 or x['init_balance'] != 0 or x['credit'] != 0 or x['debit'] != 0 )  , account_res)      
         docargs = {
-            #'doc_ids': self.ids,
-            #'doc_model': self.model,
-            #'data': data['form'],
-            #'docs': docs,
+           
             'time': time,
             'Accounts': account_res,            
             'periodo': periodo
         }
-
         return docargs
 
 
@@ -93,6 +73,12 @@ class ReportLedgerEcosoft(models.AbstractModel):
     def render_html(self, wizard, data=None):
         docargs = self.get_data(data)        
         return self.env['report'].render('account_reports_ecosoft.report_ledger_ecosoft', docargs)
+
+    @api.model
+    def get_report_values (self, docids, data): 
+        print ('get values')       
+        docargs =  self.get_data (data)        
+        return docargs
 
     @api.model
     def _get_csv(self, data=None):        

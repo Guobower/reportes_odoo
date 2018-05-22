@@ -12,27 +12,20 @@ class WizardTrialBalance(models.TransientModel):
     _name = 'wizard.trial.balance.ecosoft'
 
     choose_period = fields.Boolean('A un Periodo')
-    period_id = fields.Many2one('account.period', 'Periodo', required=False)
+    date_from = fields.Datetime('Desde')
+    date_to = fields.Datetime('Hasta')    
     level = fields.Selection([(1, '1.-Mayor'),(2, '2.- Cuenta'),(3, '3.- Sub-cta'),(4, '4.- Sub-cta-2'),(5, '5.- Auxiliar')], string='Nivel',
-      required=True, copy=False, default=1,)
-    display_account = fields.Selection([('all','All'), ('movement','With movements'), 
-                                        ('not_zero','With balance is not equal to 0'),], 
-                                        string='Display Accounts', required=True, default='movement')
-    target_move = fields.Selection([('posted', 'All Posted Entries'),
-                                    ('all', 'All Entries'),
-                                    ], string='Target Moves', required=True, default='all')
+      required=True, copy=False, default=1,)    
     only_balance = fields.Boolean('Con saldos')
+
     
     
    
     @api.multi
     def print_csv(self):
-        data = self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0]
-        print type (data)
-        print data 
-        data = str (data).replace('/', '---')
-        print data
-
+        data.setdefault('form',{})
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'level', 'only_balance'])[0])        
+        data = str (data).replace('/', '---')        
         return {
             'type' : 'ir.actions.act_url',
             'url': '/csv/trial/%s/'%(data),            
@@ -42,7 +35,7 @@ class WizardTrialBalance(models.TransientModel):
     
     def print_xls(self, data):        
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'level', 'only_balance'])[0])
         return {'type': 'ir.actions.report.xml',
                 'report_name': 'account.report_trialbalance_ecosoft.xlsx',
                 'datas': data
@@ -50,5 +43,7 @@ class WizardTrialBalance(models.TransientModel):
 
     def print_report(self, data):
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
-        return self.env['report'].get_action(False, 'account.report_trialbalance_ecosoft', data=data)
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'level', 'only_balance'])[0])
+        print (data['form'])
+        return self.env.ref('account_reports_ecosoft.action_report_trial_balance_ecosoft').report_action(self, data=data)
+        #return self.env['report'].get_action(False, 'account.report_trialbalance_ecosoft', data=data)

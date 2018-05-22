@@ -8,26 +8,16 @@ class WizardGeneralBalance(models.TransientModel):
     _name = 'wizard.general.balance.ecosoft'
 
     choose_period = fields.Boolean('A un Periodo')
-    period_id = fields.Many2one('account.period', 'Periodo', required=False)
-    level = fields.Selection([(1, '1.- Mayor'),(2, '2.- Sub-cta'),(3, '3.- Auxiliar')], string='Nivel',
-      required=True, copy=False, default=1,)
-    display_account = fields.Selection([('all','All'), ('movement','With movements'), 
-                                        ('not_zero','With balance is not equal to 0'),], 
-                                        string='Display Accounts', required=True, default='movement')
-    target_move = fields.Selection([('posted', 'All Posted Entries'),
-                                    ('all', 'All Entries'),
-                                    ], string='Target Moves', required=True, default='all')
+    date_from = fields.Datetime('Desde')
+    date_to = fields.Datetime('Hasta')      
     only_balance = fields.Boolean('Con saldos')
 
 
     @api.multi
     def print_csv(self):
-        data = self.read(['choose_period','period_id','display_account','target_move', 'only_balance'])[0]
-        print type (data)
-        print data 
-        data = str (data).replace('/', '---')        
-        print data
-
+        data.setdefault('form',{})
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'only_balance'])[0])        
+        data = str (data).replace('/', '---')                
         return {
             'type' : 'ir.actions.act_url',
             'url': '/csv/general/%s/'%(data),            
@@ -36,14 +26,15 @@ class WizardGeneralBalance(models.TransientModel):
 
     def print_xls(self, data):        
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'only_balance'])[0])
         return {'type': 'ir.actions.report.xml',
-                'report_name': 'account.report_generalbalance_ecosoft.xlsx',
+                'report_name': 'account.report_general_ecosoft.xlsx',
                 'datas': data
                 } 
 
 
     def print_report(self, data):
         data.setdefault('form',{})
-        data['form'].update(self.read(['choose_period','period_id','level','display_account','target_move', 'only_balance'])[0])        
-        return self.env['report'].get_action(False, 'account.report_generalbalance_ecosoft', data=data)
+        data['form'].update(self.read(['choose_period','date_from','date_to', 'only_balance'])[0])    
+        return self.env.ref('account_reports_ecosoft.action_report_general_balance_ecosoft').report_action(self, data=data)
+        #return self.env['report'].get_action(False, 'account.report_generalbalance_ecosoft', data=data)

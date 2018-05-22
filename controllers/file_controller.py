@@ -14,12 +14,11 @@ class CsvController(http.Controller):
         form=dict()
         form['form'] = ast.literal_eval(data)        
         if data:            
-            csv = http.request.env['report.account.report_trialbalance_ecosoft']._get_csv(form)                    
+            csv = http.request.env['report.account_reports_ecosoft.report_trialbalance_ecosoft']._get_csv(form)                    
         filename = 'Balanza Comprobación Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),
                                          ('Content-Disposition', 'attachment; filename="%s"'%(filename))])
-
   
 
     @http.route('/csv/general/<string:data>', auth='user')
@@ -28,7 +27,7 @@ class CsvController(http.Controller):
         form=dict()
         form['form'] = ast.literal_eval(data)        
         if data:            
-            csv = http.request.env['report.account.report_generalbalance_ecosoft']._get_csv(form)                    
+            csv = http.request.env['report.account_reports_ecosoft.report_generalbalance_ecosoft']._get_csv(form)                    
         filename = 'Balance General Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),
@@ -40,7 +39,7 @@ class CsvController(http.Controller):
         form=dict()
         form['form'] = ast.literal_eval(data)        
         if data:            
-            csv = http.request.env['report.account.report_results_ecosoft']._get_csv(form)                    
+            csv = http.request.env['report.account_reports_ecosoft.report_results_ecosoft']._get_csv(form)                    
         filename = 'Reporte Resultados Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),
@@ -52,7 +51,7 @@ class CsvController(http.Controller):
         form=dict()
         form['form'] = ast.literal_eval(data)        
         if data:            
-            csv = http.request.env['report.account.report_ledger_ecosoft']._get_csv(form)                    
+            csv = http.request.env['report.account_reports_ecosoft.report_ledger_ecosoft']._get_csv(form)                    
         filename = 'Libro Mayor Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),
@@ -65,7 +64,7 @@ class CsvController(http.Controller):
         form=dict()
         form['form'] = ast.literal_eval(data)        
         if data:            
-            csv = http.request.env['report.account.report_daily_ecosoft']._get_csv(form)                    
+            csv = http.request.env['report.account_reports_ecosoft.report_daily_ecosoft']._get_csv(form)                    
         filename = 'Libro Diario Ecosoft.csv'        
         return request.make_response(csv,
                                         [('Content-Type', 'application/octet-stream'),

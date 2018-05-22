@@ -6,7 +6,9 @@ from odoo.exceptions import UserError
 import datetime as dt
 import calendar
 from datetime import datetime
-from utils_xlsx import UtilsXlsx
+from .utils_xlsx import UtilsXlsx
+import functools
+from .account_ecosoft import ReportAccountsEcosoft
 
 """
 GASTOS_OPER
@@ -54,8 +56,8 @@ GASTOS_PROD_2=[87, 90]
 """
 
 
-class ReportResultsEcosoft(models.AbstractModel):
-    _name = 'report.account.report_results_ecosoft'
+class ReportResultsEcosoft(ReportAccountsEcosoft):
+    _name = 'report.account_reports_ecosoft.report_results_ecosoft'
 
     #def __init__(self): # contructor
      #   print 'initialized resultados'
@@ -167,16 +169,17 @@ class ReportResultsEcosoft(models.AbstractModel):
     def resta_elementos(self, results, code_a, code_b):
         #print 'in resta elementos'
         index_a, index_b,i=0,0,0
-        for reg in results:  
-            if reg['code'] == code_a:
-                index_a = i
-            elif reg['code'] == code_b:
-                index_b = i 
-            i+=1
-        
-        for key in results[index_a]:
-            if key not in  ('code', 'name'):
-                results[index_a][key] = abs (results[index_a][key]) - abs (results[index_b][key])
+        if results:
+            for reg in results:  
+                if reg['code'] == code_a:
+                    index_a = i
+                elif reg['code'] == code_b:
+                    index_b = i 
+                i+=1
+            
+            for key in results[index_a]:
+                if key not in  ('code', 'name'):
+                    results[index_a][key] = abs (results[index_a][key]) - abs (results[index_b][key])
 
     @staticmethod
     def calc_resultado (contexto, period_data, choose_period):        
@@ -353,7 +356,12 @@ class ReportResultsEcosoft(models.AbstractModel):
     def render_html(self, wizard, data=None):
         docargs=self.get_data(data)        
         return self.env['report'].render('account_reports_ecosoft.report_results_ecosoft', docargs)
-            
+  
+    @api.model
+    def get_report_values (self, docids, data): 
+        print ('get values')       
+        docargs =  self.get_data (data)        
+        return docargs          
 
     @api.model
     def _get_csv(self, data=None):           

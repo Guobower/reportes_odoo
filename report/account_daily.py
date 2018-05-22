@@ -6,11 +6,12 @@ from odoo.exceptions import UserError
 import datetime
 import calendar
 from datetime import datetime as dt
-from utils_xlsx import UtilsXlsx
+from .utils_xlsx import UtilsXlsx
+from functools import reduce
 
 
 class ReportDailyEcosoft(models.AbstractModel):
-    _name = 'report.account.report_daily_ecosoft'
+    _name = 'report.account_reports_ecosoft.report_daily_ecosoft'
 
   
     def get_lines(self, lista, choose_period,  context, only_balance):
@@ -82,14 +83,9 @@ class ReportDailyEcosoft(models.AbstractModel):
         
         account_res = self.calc_data(moves , choose_period, context,  only_balance)
 
-        #self.model = self.env.context.get('active_model')
-        #docs = self.env[self.model].browse(self.env.context.get('active_ids', []))
         
         docargs = {
-            #'doc_ids': self.ids,
-            #'doc_model': self.model,
-            #'data': data['form'],
-            #'docs': docs,
+           
             'time': time,
             'Accounts': account_res,            
             'periodo': periodo
@@ -101,6 +97,11 @@ class ReportDailyEcosoft(models.AbstractModel):
         docargs = self.get_data(data)
         return self.env['report'].render('account_reports_ecosoft.report_daily_ecosoft', docargs)
 
+    @api.model
+    def get_report_values (self, docids, data): 
+        print ('get values')       
+        docargs =  self.get_data (data)        
+        return docargs
                       
     @api.model
     def _get_csv(self, data=None):        

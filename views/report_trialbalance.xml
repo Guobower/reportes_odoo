@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <template id="report_trialbalance_ecosoft">
-    <t t-call="report.html_container">
-        <t t-call="report.internal_layout">
+    <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
             <div class="page">
                 <t t-set="company" t-value="res_company"></t>
                  <table style="width: 100%">                         
@@ -11,8 +11,8 @@
                             <h2><span t-esc="res_company.name"/></h2>
                         </td>
                         <td>
-                            <img t-if="company.logo"
-                                    t-att-src="'data:image/png;base64,%s' % company.logo"
+                            <img t-if="company.logo_web"
+                                    t-att-src="'data:image/png;base64,%s' % company.logo_web"
                                     style="max-height:90px;" />
                         </td>
                    </tr>                                        
@@ -21,12 +21,12 @@
                   <tr>
                         <td class="text-left">
                           <h5>
-                               Dirección: Industria electrica No. 2 parque industrial secc. Venus, 
+                               <span t-esc="res_company.vat"/>
                                
                            </h5>
                         </td>
                         <td class="text-right">
-                          <h5> Reg. Frd.: IGU640324RD7</h5>
+                           <h5><span t-esc="res_company.street_name"/> <span t-esc="res_company.street_number"/>, <span t-esc="res_company.city"/></h5>
                         </td>
                    </tr>
                    
@@ -57,59 +57,32 @@
                     </thead>
                     <tbody>
                         <tr t-foreach="Accounts" t-as="account">
-                            <td t-if="account['level'] == 1"  style="padding-top:20px;">
+                            <td  style="padding-top:20px;">
                                 <span t-att-style="style" t-esc="account['code']"/>
                             </td>
-                            <td t-else="" >
-                                <span t-att-style="style" t-esc="account['code']"/>
-                            </td>
-                             <td t-if="account['level'] == 1"  style="padding-top:20px;">
-                                <span  t-if="account['level'] == 1" t-esc="''"/>
-                                <span t-elif="account['level'] == 2" style="padding-left:1em;" t-esc="''"/>
-                                <span t-elif="account['level'] == 3" style="padding-left:2em;" t-esc="''"/>
-                                <span t-elif="account['level'] == 4" style="padding-left:3em;" t-esc="''"/>
-                                <span t-else="" style="padding-left:4em;" t-esc="''"/>
-                                <span t-att-style="style" t-esc="account['name']"/>
-                            </td>
-                            <td t-else="" >
-                                <span  t-if="account['level'] == 1" t-esc="''"/>
-                                <span t-elif="account['level'] == 2" style="padding-left:1em;" t-esc="''"/>
-                                <span t-elif="account['level'] == 3" style="padding-left:2em;" t-esc="''"/>
-                                <span t-elif="account['level'] == 4" style="padding-left:3em;" t-esc="''"/>
-                                <span t-else="" style="padding-left:4em;" t-esc="''"/>
+                            <td  style="padding-top:20px;">
                                 <span t-att-style="style" t-esc="account['name']"/>
                             </td>
                             
-                            <td t-if="account['level'] == 1" class="text-right" style="padding-top:20px;">
-                                 <span t-att-style="style" t-esc="account['argil_initial_balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                            </td>
-                            <td t-else="" class="text-right">
-                                 <span t-att-style="style" t-esc="account['argil_initial_balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                            <td class="text-right" style="padding-top:20px;">
+                                 <span t-att-style="style" t-esc="account['balance_init']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                             </td>
                             
-                            <td t-if="account['level'] == 1" class="text-right" style="padding-top:20px;">
+                            <td  class="text-right" style="padding-top:20px;">
                                  <span t-att-style="style" t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                             </td>
-                            <td t-else="" class="text-right">
-                                 <span t-att-style="style" t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                            </td>
-
-                             <td t-if="account['level'] == 1" class="text-right" style="padding-top:20px;" >
+                            
+                             <td  class="text-right" style="padding-top:20px;" >
                                 <span t-att-style="style" t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                             </td>
-                            <td t-else="" class="text-right">
-                                <span t-att-style="style" t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                            </td>
-
-                            <td t-if="account['level'] == 1" class="text-right" style="padding-top:20px;">
+                            
+                            <td  class="text-right" style="padding-top:20px;">
                                   <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                             </td>
-                            <td t-else="" class="text-right">
-                                <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                            </td>
-
+                            
                         </tr>
-                        <tr>
+                        
+                        <tr t-if="totales">
                           <td>
                                 <span t-att-style="style"><strong>Totales</strong> </span>
                             </td>
@@ -118,7 +91,7 @@
                             </td>
                             
                           <td class="text-right"><strong>
-                            <span t-att-style="style" t-esc="totales['argil_initial_balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/> </strong>
+                            <span t-att-style="style" t-esc="totales['balance_init']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/> </strong>
                           </td>
                           <td class="text-right"><strong>
                             <span t-att-style="style" t-esc="totales['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/> </strong>

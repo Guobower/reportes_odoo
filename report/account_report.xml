@@ -15,120 +15,111 @@
 
         <report 
             id="action_report_trial_balance_ecosoft"
-            model="account.balance.report"
+            model="account.account"
             string="Balanza Comprobación Ecosoft"
             report_type="qweb-pdf"
-            name="account.report_trialbalance_ecosoft"
-            file="account.report_trialbalance_ecosoft"
+            name="account_reports_ecosoft.report_trialbalance_ecosoft"
+            file="account_reports_ecosoft.report_trialbalance_ecosoft"
+            paperformat="paperformat_ecosoft"
             />
         <report
             id="action_report_trial_balance_ecosoft_xlsx"
-            model="wizard.trial.balance.ecosoft"
+            model="account.account"
             string="Balanza Comprobación Ecosoft"
             report_type="xlsx"
-            name="account.report_trialbalance_ecosoft.xlsx"
-            file="account.report_trialbalance_ecosoft.xlsx"
+            name="account_reports_ecosoft.report_general_ecosoft.xlsx"
+            file="account_reports_ecosoft.report_general_ecosoft.xlsx"
             attachment_use="False"
         />
 
-        <record id="action_report_trial_balance_ecosoft" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="paperformat_ecosoft" />
-        </record>
-
+        
         <report 
             id="action_report_general_balance_ecosoft"
-            model="account.general.report"
+            model="account.account"
             string="Balance General Ecosoft"
             report_type="qweb-pdf"
-            name="account.report_generalbalance_ecosoft"
-            file="account.report_generalbalance_ecosoft"
+            name="account_reports_ecosoft.report_generalbalance_ecosoft"
+            file="account_reports_ecosoft.report_generalbalance_ecosoft"
+            paperformat="paperformat_ecosoft"
             />
 
          <report
             id="action_report_general_balance_ecosoft_xlsx"
-            model="wizard.general.balance.ecosoft"
+            model="account.account"
             string="Balance General Ecosoft"
             report_type="xlsx"
-            name="account.report_generalbalance_ecosoft.xlsx"
-            file="account.report_generalbalance_ecosoft.xlsx"
+            name="account_reports_ecosoft.report_generalbalance_ecosoft.xlsx"
+            file="account_reports_ecosoft.report_generalbalance_ecosoft.xlsx"
             attachment_use="False"
         />
 
 
-        <record id="action_report_general_balance_ecosoft" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="paperformat_ecosoft" />
-        </record>
-
+        
 
         <report 
             id="action_report_results_ecosoft"
-            model="account.results.report"
+            model="account.account"
             string="Reporte Resultados Ecosoft"
             report_type="qweb-pdf"            
-            name="account.report_results_ecosoft"
-            file="account.report_results_ecosoft"
+            name="account_reports_ecosoft.report_results_ecosoft"
+            file="account_reports_ecosoft.report_results_ecosoft"
+            paperformat="paperformat_ecosoft"
             />
 
         <report
             id="action_report_results_ecosoft_xlsx"
-            model="wizard.results.ecosoft"
+            model="account.account"
             string="Reporte Resultados Ecosoft"
             report_type="xlsx"
-            name="account.report_results_ecosoft.xlsx"
-            file="account.report_results_ecosoft.xlsx"
+            name="account_reports_ecosoft.report_results_ecosoft.xlsx"
+            file="account_reports_ecosoft.report_results_ecosoft.xlsx"
             attachment_use="False"
         />
-        <record id="action_report_results_ecosoft" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="paperformat_ecosoft" />
-        </record>
-
+        
         <report 
             id="action_report_daily_ecosoft"
-            model="account.daily.report"
+            model="account.account"
             string="Libro Diario Ecosoft"
             report_type="qweb-pdf"
-            name="account.report_daily_ecosoft"
-            file="account.report_daily_ecosoft"
+            name="account_reports_ecosoft.report_daily_ecosoft"
+            file="account_reports_ecosoft.report_daily_ecosoft"
+            paperformat="paperformat_ecosoft"
             />
 
 
         <report
             id="action_report_daily_ecosoft_xlsx"
-            model="wizard.daily.ecosoft"
+            model="account.account"
             string="Libro Diario Ecosoft"
             report_type="xlsx"
-            name="account.report_daily_ecosoft.xlsx"
-            file="account.report_daily_ecosoft.xlsx"
+            name="account_reports_ecosoft.report_daily_ecosoft.xlsx"
+            file="account_reports_ecosoft.report_daily_ecosoft.xlsx"
             attachment_use="False"
         />
 
-        <record id="action_report_daily_ecosoft" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="paperformat_ecosoft" />
-        </record>
-
+        
 
         <report 
             id="action_report_ledger_ecosoft"
-            model="account.ledger.report"
+            model="account.account"
             string="Libro Mayor Ecosoft"
             report_type="qweb-pdf"
-            name="account.report_ledger_ecosoft"
-            file="account.report_ledger_ecosoft"
+            name="account_reports_ecosoft.report_ledger_ecosoft"
+            file="account_reports_ecosoft.report_ledger_ecosoft"
+            paperformat="paperformat_ecosoft"
             />
 
         <report
             id="action_report_ledger_ecosoft_xlsx"
-            model="wizard.ledger.ecosoft"
+            model="account.account"
             string="Libro Mayor Ecosoft"
             report_type="xlsx"
-            name="account.report_ledger_ecosoft.xlsx"
-            file="account.report_ledger_ecosoft.xlsx"
+            name="account_reports_ecosoft.report_ledger_ecosoft.xlsx"
+            file="account_reports_ecosoft.report_ledger_ecosoft.xlsx"
             attachment_use="False"
         />
 
-        <record id="action_report_ledger_ecosoft" model="ir.actions.report.xml">
-            <field name="paperformat_id" ref="paperformat_ecosoft" />
-        </record>
+        
         
     </data>
 </odoo>
